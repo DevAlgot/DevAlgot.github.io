@@ -148,7 +148,7 @@ async function setUpShows(shows) {
 
   shows.map(async movie => {
     if (movie.external_ids.imdb_id == null) return;
-    if(container.childElementCount >= 12) return;
+    if (container.childElementCount >= 12) return;
     //var movie = await getDataFromID(movie.external_ids.imdb_id);
     const form = document.createElement('form');
 
@@ -270,6 +270,40 @@ async function setUpMovies(movies) {
 window.addEventListener("scroll", function () {
   document.querySelector(".header").classList.toggle("active-header", window.scrollY > 0);
 });
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  const movieLinks = [
+    "tt0068646", // Element 0, ID = tt0068646 i = 0
+    "tt0468569", // 1 i = 1
+    "tt0463234", // 2 ...
+    
+  ];
+
+
+  for (let i = 0; i < movieLinks.length; i++) {
+    var movie = await getMovieData(movieLinks[i]);
+    console.log(movie.title);
+    
+  }
+
+
+});
+
+async function getMovieData(movieID) {
+  const url = "https://api.themoviedb.org/3/movie/"+movieID+"?language=en-US";
+
+  return await fetch(url, options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+
+}
+
+
 
 /*
 <form id="tt000000">
