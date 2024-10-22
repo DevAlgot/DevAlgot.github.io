@@ -281,14 +281,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     "tt0068646", // Element 0, ID = tt0068646 i = 0
     "tt0468569", // 1 i = 1
     "tt0463234", // 2 ...
-    
   ];
 
+  var horrorMovies = await getHorrorMovies();
+  
 
-  for (let i = 0; i < movieLinks.length; i++) {
-    var movie = await getMovieData(movieLinks[i]);
-    console.log(movie.title);
-    
+  for (let i = 0; i < horrorMovies.results.length; i++) {
+    console.log(horrorMovies.results[i].id);
+    var movie = await getMovieData(horrorMovies.results[i].id);
+    console.log(movie);
   }
 
 
@@ -303,7 +304,14 @@ async function getMovieData(movieID) {
 
 }
 
+async function getHorrorMovies() {
+  const url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
 
+  return await fetch(url, options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+  
+}
 
 /*
 <form id="tt000000">
