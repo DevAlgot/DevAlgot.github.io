@@ -1,0 +1,145 @@
+#serie-action-holder{
+    display: flex;
+    height: 70px;
+    justify-content: center;
+    margin-bottom: 50px;
+    color: white;
+}
+#serie-action{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    background-color: rgb(36, 36, 36);
+    border-radius: 15px;
+    font-size: larger;
+}
+
+svg{
+    height: 1rem;
+}
+
+#iframe{
+    border: none;
+}
+
+#serie-action button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    width: 120px;
+    height: -webkit-fill-available;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: rgb(85, 85, 85);
+    color: white;
+    border: none;
+    font-size: 1rem;
+}
+
+#serie-action button:hover{
+    background-color: rgb(65, 65, 65);
+    cursor: pointer;
+}
+
+.inactive{
+    background: rgba(85, 85, 85, 04);
+}
+
+#serie-action span{
+    color: grey;
+}
+#serie-action span::before{
+    content: "-";
+    padding: .5rem;
+}
+
+#episodes-holder{
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    height: 500px;
+    border-radius: 15px;
+    height: fit-content;
+
+}
+
+#episodes-class{
+    display: flex;
+    width: 90%;
+    border-radius: 15px;
+}
+
+#episodes-class ul{
+    background-color: rgb(33, 33, 33);
+    width: 150px;
+    margin: 0px;
+    color: white;
+    display:flex;
+    flex-direction: column;
+    border-radius: 15px 0 0 15px;
+    overflow: hidden;
+}
+
+#episodes-class ul:hover{
+    cursor: pointer;
+}
+
+#episodes-class ul li{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 50px;
+}
+
+.active{
+    background-color:rgb(42, 42, 42);
+    
+}
+
+#episodes{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    background-color: rgb(42, 42, 42);
+    width: 100%;
+    border-radius: 0 15px 15px  15px ;
+    padding: 20px;
+    row-gap: 10px;
+}
+.episode{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 70px;
+    background-color: rgb(30, 30, 35);
+    color: white;
+    row-gap: 5px;
+    border-radius: 8px;
+}
+
+.episode:hover{
+    background-color: rgb(25, 25, 30);
+    cursor: pointer;
+}
+
+.episode p{
+    margin: 0;
+    margin-left: 1rem;
+}
+
+.ep-name{
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.ep-number{
+    margin-left: 1rem;
+    font-weight:400;
+    font-size: .8rem;
+    color: rgb(153, 153, 153);
+    margin: 0 0 0 0;
+}
+

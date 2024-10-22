@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Movies Online</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="movie-styles.css">
+    <link rel="icon" href="Images/icon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <header>
+            <div class="header">
+               
+                <h1><a href="index.html" id="name"> <img src="Images/icon.ico" alt="Icon">Hemflix</a></h1>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#filler">Movies</a></li>
+                    <li><a href="">Coming</a></li>
+                    <li><a href="">News</a></li>
+                </ul>
+                <div id="search">
+                    <input type="text" id="input" placeholder="Search Movie" onkeyup="search()">
+                
+                </div>
+            </div>
+    </header>
+    <main>
+        <div id="header-spacer"></div>
+        <div id="main">
+            <div id="background">
+
+            </div>
+            <div id="information-holder">
+                
+            </div>
+            <div class="filler-holder">
+                <div class="filler">
+                    <h2 style="color: white;">SIMILAR</h2>
+                    <div class="seperator"></div>
+                </div>
+            </div>
+            <div id="similar-holder">
+                <div id="similar">
+                    <form id="tt000000">
+                        <button type="submit" class="movie-button">
+                        <div class="movie">
+                            <img class="poster" src="Images/shrekPoster.jpg" />
+                            <div class="description">
+                            <p class="bold">Shrek</p>
+                            <div class="movie-description">
+                                <p>75 min</p>
+                                <p class="genre">Action</p>
+                            </div>
+                            </div>
+                        </div>
+                        </button>
+                    </form>
+                    <form id="tt000000">
+                        <button type="submit" class="movie-button">
+                        <div class="movie">
+                            <img class="poster" src="Images/shrekPoster.jpg" />
+                            <div class="description">
+                            <p class="bold">Shrek</p>
+                            <div class="movie-description">
+                                <p>75 min</p>
+                                <p class="genre">Action</p>
+                            </div>
+                            </div>
+                        </div>
+                        </button>
+                    </form>
+                    <form id="tt000000">
+                        <button type="submit" class="movie-button">
+                        <div class="movie">
+                            <img class="poster" src="Images/shrekPoster.jpg" />
+                            <div class="description">
+                            <p class="bold">Shrek</p>
+                            <div class="movie-description">
+                                <p>75 min</p>
+                                <p class="genre">Action</p>
+                            </div>
+                            </div>
+                        </div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+            
+    </main>
+
+    <script>
+        window.addEventListener("scroll", function() {
+            document.querySelector(".header").classList.toggle("active-header", window.scrollY > 0);
+        });
+    </script>
+    <script type="module" src="movie-script.js"></script>
+    <script src="search-engine.js"></script>
+    <script>
+
+    </script>
+
+</body>
+</html>

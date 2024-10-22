@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Movies Online</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="movie-styles.css">
+    <link rel="stylesheet" href="watch-serie.css">
+    <link rel="icon" href="Images/icon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <header>
+            <div class="header">
+               
+                <h1><a href="index.html" id="name"> <img src="Images/icon.ico" alt="Icon">Hemflix</a></h1>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#filler">Movies</a></li>
+                    <li><a href="">Coming</a></li>
+                    <li><a href="">News</a></li>
+                </ul>
+                <div id="search">
+                    <input type="text" id="input" placeholder="Search Movie" onkeyup="search()">
+                    
+                </div>
+            </div>
+    </header>
+    <main>
+        <div id="header-spacer"></div>
+        <div id="main">
+            <div id="background">
+            </div>
+            <div id="serie-action-holder">
+                <div id="serie-action">
+                    <button>
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="backward-step" class="svg-inline--fa fa-backward-step " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M267.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160L64 241V96c0-17.7-14.3-32-32-32S0 78.3 0 96V416c0 17.7 14.3 32 32 32s32-14.3 32-32V271l11.5 9.6 192 160z"></path></svg>
+                        Previous
+                    </button>
+        
+
+                    <button>Next
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="forward-step" class="svg-inline--fa fa-forward-step " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4l192 160L256 241V96c0-17.7 14.3-32 32-32s32 14.3 32 32V416c0 17.7-14.3 32-32 32s-32-14.3-32-32V271l-11.5 9.6-192 160z"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="information-holder">
+                
+            </div>
+
+            <div id="episodes-holder">
+    
+            </div>
+
+        </div>
+        
+            
+    </main>
+
+    <script>
+        window.addEventListener("scroll", function() {
+            document.querySelector(".header").classList.toggle("active-header", window.scrollY > 0);
+        });
+    </script>
+    <script src="show-script.js"></script>
+    <script src="search-engine.js"></script>
+    
+
+</body>
+</html>

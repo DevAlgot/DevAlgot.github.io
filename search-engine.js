@@ -1,0 +1,129 @@
+
+async function getDataNewQuery(movieName) {
+    var url = "https://api.themoviedb.org/3/search/multi?query="+movieName+"&include_adult=false&language=en-US&page=1";
+  
+    const response = await fetch(url, options)
+      .then(response => response.json())
+      .catch(err => console.error(err));
+  
+    var results = [];
+  
+      for (let i = 0; i < Math.min( response.results.length, 10); i++) {
+        results.push(await getDataFromID(response.results[i].id, response.results[i].media_type));
+        //console.log(response.results[i]);
+        
+      }
+      //sconsole.log(results);
+      
+      return results;
+  }
+  
+  async function getDataFromID(id, movie){
+    var url
+    if(movie ==='movie'){
+      url = "https://api.themoviedb.org/3/movie/"+id+"&include_adult=false&language=en-US&append_to_response=external_ids";
+    }
+    else{
+      url =  "https://api.themoviedb.org/3/tv/"+id+"?append_to_response=external_ids";      
+    }
+  
+    const response = await fetch(url, options)
+    .then(response => response.json())
+    //.then(response => console.log(response))
+    .catch(err => console.error(err));
+  
+    return response;
+  }
+
+
+
+
+function createSearchResult(data, index) {
+
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'result';     
+  
+    const searchPosterDiv = document.createElement('div');
+    searchPosterDiv.className = 'search-poster';
+  
+    const img = document.createElement('img');
+    img.src = "https://image.tmdb.org/t/p/original/"+data[index].poster_path;
+    img.alt = '';
+    img.width = 342;
+    img.height = 456;
+  
+    searchPosterDiv.appendChild(img);
+  
+    const searchTextDiv = document.createElement('div');
+    searchTextDiv.className = 'search-text';
+  
+    const headerP = document.createElement('p');
+    headerP.className = 'searchResult-header';
+    headerP.textContent = data[index].name || data[index].title;
+  
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'searchResult-info';
+  
+    const yearP = document.createElement('p');
+    if(data[index].imdb_id == null)  yearP.textContent = data[index].first_air_date?.split("-")[0];
+    else yearP.textContent = data[index].release_date.split("-")[0];
+  
+    const durationP = document.createElement('p');
+    durationP.textContent = (data[index].runtime || data[index].episode_run_time[0] || "0") + " min";
+  
+    const typeP = document.createElement('p');
+    typeP.className = 'result-type';
+    if(data[index].imdb_id == null) typeP.textContent = ("Tv-series ");
+    else typeP.textContent = ("Movie");
+    
+  
+    infoDiv.appendChild(yearP);
+    infoDiv.appendChild(durationP);
+    infoDiv.appendChild(typeP);
+  
+    searchTextDiv.appendChild(headerP);
+    searchTextDiv.appendChild(infoDiv);
+  
+    resultDiv.appendChild(searchPosterDiv);
+    resultDiv.appendChild(searchTextDiv);
+  
+    resultDiv.addEventListener('click', function(event) {
+      event.preventDefault();
+      if (data[index].imdb_id) {
+        const title = data[index].imdb_id;
+        const url = `watch.html?title=${encodeURIComponent(title)}`;
+        window.location.href = url;  
+      }
+      else {
+        const title = data[index].external_ids.imdb_id;
+        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=1&e=1`;
+        window.location.href = url;  
+      }
+      
+    });
+
+  
+    return resultDiv;
+}
+async function search() {
+    if(document.getElementById('searchResult')) document.getElementById('searchResult').remove();
+
+
+    const resultesDiv = document.createElement('div');
+    resultesDiv.id ='searchResult'
+    document.getElementById('search').appendChild(resultesDiv);
+    
+
+    //document.getElementById('searchResult').textContent = '';
+    
+    const input = document.getElementById('input');
+    const result = await getDataNewQuery(input.value, "name")
+
+
+        
+    for (let i = 0; i < Math.min( result.length, 10); i++) {
+        
+        document.getElementById('searchResult').appendChild(createSearchResult(result, i));
+    }
+}
+
