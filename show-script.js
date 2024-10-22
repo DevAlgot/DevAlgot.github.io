@@ -1,16 +1,22 @@
 var currentIndex = 1;
 
-
+const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMTQ3YzQxZWU5OTA0OTA0NDA4OTQ0YzI0YzE0MmFjMiIsIm5iZiI6MTcyODc1OTQ2OS4yNTgyNywic3ViIjoiNjcwNTc1NzUzMjJkM2VhODMxMWQ1ZmQ0Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.W9-_PxxFBzTIMrLInXStocvXoNRooLtjqqjaieG9b-E'
+  }
+};
 
 document.addEventListener("DOMContentLoaded", async function() {
 
     var show = await getData(getQueryParam('title').split('/')[0]);
     var seasonData = await getSeasonData(getQueryParam('title'), getQueryParam('s'));
 
-    document.title = "Watch " + show.Title + " Online";
-
     console.log(seasonData);
     
+
+    document.title = "Watch " + show.Title + " Online";   
 
     var background = document.getElementById("background");
     var iframe = document.createElement("iframe");
@@ -96,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     var ulElement = document.createElement("ul");
 
     //Season click handler
-    for (let index = 1; index < show.totalSeasons; index++) {
+    for (let index = 1; index <= show.totalSeasons; index++) {
         var seasonLi = document.createElement("li");
         seasonLi.textContent = "Season " + index;
 
@@ -127,8 +133,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     //Next and previous button
     for (let j = 0; j < 3; j++) {
       var btn = document.getElementById("serie-action").children[j];
-
-        console.log(btn);
       
         btn.addEventListener('click', function() {
           console.log("Clicked button " + j);
@@ -196,15 +200,31 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     }
     
-
-    
-
-    
     episodesClassDiv.appendChild(episodesDiv);
 
     document.getElementById("episodes-holder").appendChild(episodesClassDiv);
     
+    console.log(show);
+    
+    console.log(await getSimilarDataNew(seasonData.id));
+
+    //TODO: Change the api to TMDb for more detailed data and similar movies
+
+    
 });
+
+
+async function getSimilarDataNew(movieID) {
+  var url = "https://api.themoviedb.org/3/tv/"+movieID+"/similar?language=en-US&page=1";
+  
+
+  const response = await fetch(url, options)
+    .then(response => response.json())
+    .catch(err => console.error(err));
+
+  return response;
+
+}
 
 function updateEpisodes(seasonData,showData) {
     document.getElementById("episodes").remove();
@@ -272,6 +292,73 @@ async function getSeasonData(movieID, seasonIndex) {
       console.error(error.message);
     }
 }
+
+
+
+async function setUpShows(shows) {
+  const container = document.getElementById('similar');
+
+
+  shows.map(async movie => {
+    if (movie.external_ids.imdb_id == null) return;
+    if(container.childElementCount >= 12) return;
+    //var movie = await getDataFromID(movie.external_ids.imdb_id);
+    const form = document.createElement('form');
+
+    form.id = movie.imdbID;
+
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.className = 'movie-button';
+
+    const movieDiv = document.createElement('div');
+    movieDiv.className = 'movie';
+
+    const posterDiv = document.createElement('img');
+    posterDiv.className = 'poster';
+    posterDiv.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+
+    const descriptionDiv = document.createElement('div');
+    descriptionDiv.className = 'description';
+
+    const titleP = document.createElement('p');
+    titleP.className = 'bold';
+    titleP.textContent = movie.name;
+
+    const movieDescriptionDiv = document.createElement('div');
+    movieDescriptionDiv.className = 'movie-description';
+
+    const durationP = document.createElement('p');
+    durationP.textContent = (movie.episode_run_time[0] || "0") + " min";
+
+    const genreP = document.createElement('p');
+    genreP.className = 'genre';
+    genreP.textContent = movie.genres[0]?.name;
+
+    movieDescriptionDiv.appendChild(durationP);
+    movieDescriptionDiv.appendChild(genreP);
+    descriptionDiv.appendChild(titleP);
+    descriptionDiv.appendChild(movieDescriptionDiv);
+    movieDiv.appendChild(posterDiv);
+    movieDiv.appendChild(descriptionDiv);
+    button.appendChild(movieDiv);
+    form.appendChild(button);
+    container.appendChild(form);
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const title = movie.external_ids.imdb_id;
+      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=1&e=1`;
+      window.location.href = url;
+    });
+
+    return form;
+  });
+
+  //forms.forEach(form => container.appendChild(form));
+}
+
+
 
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);    

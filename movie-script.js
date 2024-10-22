@@ -10,6 +10,8 @@ const options = {
 document.addEventListener("DOMContentLoaded", async function() {
 
     var movie = await getDataNew(getQueryParam('title'));
+    console.log(movie);
+    
 
     document.title = "Watch " + movie.title + " Online";
     
@@ -17,8 +19,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     var background = document.getElementById("background");
     var iframe = document.createElement("iframe");
     
-    iframe.src = `https://multiembed.mov/directstream.php?video_id=${movie.imdb_id}`; //directstream.php?
-    
+    iframe.src = `https://multiembed.mov/?video_id=${movie.imdb_id}`; //directstream.php?
     
     iframe.allowFullscreen = true;
     background.appendChild(iframe);
@@ -40,18 +41,25 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     var categories = document.createElement("div");
     categories.id = "Categories";
+
     var genre = document.createElement("p");
     genre.id = "Genre";
+
     genre.textContent = "Genre: "+movie.genres[0].name;
     categories.appendChild(genre);
+
     var duration = document.createElement("p");
     duration.id = "Duration";
+
     duration.textContent = "Duration: "+ movie.runtime + " minutes";
     categories.appendChild(duration);
+
     var country = document.createElement("p");
     country.id = "Country";
+
     country.textContent = "Country: "+ movie.production_countries[0].name;
     categories.appendChild(country);
+    
     var director = document.createElement("p");
     director.id = "Director";
 
@@ -77,6 +85,10 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     information.appendChild(description);
     informationHolder.appendChild(information);
+    
+    setUpMovies(await getSimilarDataNew(movie.id));
+    //setUpMovies(ar)
+    
 
 });
 
@@ -103,7 +115,7 @@ async function getDataNew(movieID) {
     .then(response => response.json())
     .catch(err => console.error(err));
 
-    return response;
+  return response;
 
 }
 
@@ -113,8 +125,86 @@ function getQueryParam(param) {
 }
 
 function getFromIframe(){
-  var iframe = document.querySelector('iframe');
-  var video = iframe.contentWindow.document.getElementsByTagName('iframe')[0];
-  console.log(video);
+  var iframe = document.querySelector('video');
+  var video = iframe.contentWindow.document.getElementsByTagName('video')[0];
+  console.log(video); 
+}
+
+async function getSimilarDataNew(movieID, isMovie = true) {
+  var url = "https://api.themoviedb.org/3/movie/"+movieID+"/recommendations?language=en-US&page=1";
   
+
+  const response = await fetch(url, options)
+    .then(response => response.json())
+    .catch(err => console.error(err));
+
+  return response;
+
+}
+
+
+async function setUpMovies(movies) {
+  const container = document.getElementById('similar');
+
+  movies.results.length = 6;
+  
+   movies.results.map(async movie => {  
+
+    var movie = (await getDataNew(movie.id));
+    
+    const form = document.createElement('form');
+
+    form.id = movie.imdb_id;
+
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.className = 'movie-button';
+
+    const movieDiv = document.createElement('div');
+    movieDiv.className = 'movie';
+
+    const posterDiv = document.createElement('img');
+    posterDiv.className = 'poster';
+    if(movie.poster_path == null) posterDiv.src = "Images/img-notfound.png";
+    else posterDiv.src = `https://image.tmdb.org/t/p/original/${movie.poster_path})`;
+
+
+    const descriptionDiv = document.createElement('div');
+    descriptionDiv.className = 'description';
+
+    const titleP = document.createElement('p');
+    titleP.className = 'bold';
+    titleP.textContent = movie.title;
+
+    const movieDescriptionDiv = document.createElement('div');
+    movieDescriptionDiv.className = 'movie-description';
+
+    const durationP = document.createElement('p');
+    durationP.textContent = movie.runtime + " min";
+
+    const genreP = document.createElement('p');
+    genreP.className = 'genre';
+    genreP.textContent = movie.genres[0].name;
+
+
+    movieDescriptionDiv.appendChild(durationP);
+    movieDescriptionDiv.appendChild(genreP);
+    descriptionDiv.appendChild(titleP);
+    descriptionDiv.appendChild(movieDescriptionDiv);
+    movieDiv.appendChild(posterDiv);
+    movieDiv.appendChild(descriptionDiv);
+    button.appendChild(movieDiv);
+    form.appendChild(button);
+    container.appendChild(form);
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const title = movie.imdb_id;
+      const url = `watch.html?title=${encodeURIComponent(title)}`;
+      window.location.href = url;
+    });
+
+    return form;
+  });
+
 }

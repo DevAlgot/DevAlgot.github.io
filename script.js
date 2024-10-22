@@ -176,7 +176,7 @@ async function setUpShows(shows) {
     movieDescriptionDiv.className = 'movie-description';
 
     const durationP = document.createElement('p');
-    durationP.textContent = movie.episode_run_time[0] + " min";
+    durationP.textContent = (movie.episode_run_time[0] || "0") + " min";
 
     const genreP = document.createElement('p');
     genreP.className = 'genre';

@@ -118,6 +118,7 @@ ul a:hover::after{
     display: flex;
     background-color: #141414;
     border-radius: 9px;
+    transition: all ease .2s;
 }
 
 .result:hover{
@@ -254,6 +255,8 @@ ul a:hover::after{
 
     display: flex;
     flex-direction: column;
+
+    overflow: hidden;
 }
 
 .movie:hover{
@@ -271,6 +274,12 @@ ul a:hover::after{
 
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+
+    transition: all .3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.movie .poster:hover{
+    transform: scale(1.05);
 }
 
 .movie .description{
@@ -356,4 +365,5 @@ ul a:hover::after{
     display: flex;
     justify-content: center;
     width: 90%;
+    flex-wrap: wrap;
 }
