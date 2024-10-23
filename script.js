@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const popularMoviesFull = await (getDataNew(popularMovies.results[i].id));
     movieLinksPopular.push(popularMoviesFull.imdb_id);
   }
+  for (let j = 0; j < 3; j++) {
+    setUpSlider(popularMovies.results[j], movieLinksPopular[j]);
+  }  
   setUpMovies(movieLinksPopular);
 
   var popularShows = await getPopularShows();
@@ -40,6 +43,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   }
   setUpShows(showLinksPopular);
+  
+  
 });
 
 
@@ -141,6 +146,25 @@ async function getDataFromID(id, movie) {
   return response;
 }
 
+
+async function setUpSlider(movie, id) {
+  const container = document.getElementById("omslag");
+  console.log(movie);
+  
+
+  const image = document.createElement("swiper-slide");
+  image.classList = "movie1";
+  image.style = "background-image: linear-gradient(180deg, rgba(179, 222, 208, 0) 90%, rgba(10, 10, 10, 1) 100%), url(https://image.tmdb.org/t/p/original/"+movie.backdrop_path+");"
+  container.appendChild(image);
+  image.innerHTML = `
+  <div class="swiper-info">
+    <h1 style="font-size: xxx-large; margin-bottom:1rem;">${movie.title}</h1>
+    <a href="watch.html?title=${encodeURIComponent(id)}">Watch Now</a>
+  </div>`
+
+  //role="group" aria-label="1 / 2" class="swiper-slide-active"
+
+}
 
 async function setUpShows(shows) {
   const container = document.getElementById('series');
@@ -287,9 +311,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   
 
   for (let i = 0; i < horrorMovies.results.length; i++) {
-    console.log(horrorMovies.results[i].id);
+    //console.log(horrorMovies.results[i].id);
     var movie = await getMovieData(horrorMovies.results[i].id);
-    console.log(movie);
+    //console.log(movie);
   }
 
 
