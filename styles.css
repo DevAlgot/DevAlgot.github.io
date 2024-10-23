@@ -244,7 +244,7 @@ ul a:hover::after{
 }
 
 .movie {
-    width: 200px;
+    width: 230px;
     margin: 10px;
     border-radius: 15px;
     margin-bottom: 30px;
@@ -261,8 +261,7 @@ ul a:hover::after{
 }
 
 
-.movie .poster {
-    width: 200px;   
+.movie .poster {  
     background-size: cover;
     overflow: hidden;
     background-repeat: no-repeat;
@@ -283,7 +282,8 @@ ul a:hover::after{
     left: 0;
     right: 0;
     color: white;
-    padding: 6px;
+    padding: 1rem;
+    padding-top: 100%;
     padding-bottom: 0px;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
