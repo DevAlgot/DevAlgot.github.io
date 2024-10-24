@@ -116,8 +116,10 @@ function createSearchResult(data, index) {
 
 async function search() {
   //document.getElementById('searchResult').textContent = '';
+  console.log("Searching...");
+  
+  const input = document.getElementById('search');
 
-  const input = document.getElementById('input');
   input.addEventListener('keydown', (event) => {
     if (event.key == 'Enter') {
       console.log("Enter key pressed");

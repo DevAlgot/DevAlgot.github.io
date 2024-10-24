@@ -7,10 +7,11 @@ main{
 #background{
     display: flex;
     aspect-ratio: 16/8;
-    margin-top: 50px;
     justify-content: center;
     align-items: center;
     border-radius: 15px;
+    padding-left: 200px;
+    padding-right: 200px;
 }
 
 #header-spacer{
@@ -25,8 +26,9 @@ main{
 
 iframe{
     border: 0;
-    width: 90%;
-    height: 90%;
+    aspect-ratio: 16/8;
+    width: 100%;
+    height: auto;
     border-radius: 15px;
 }
 
@@ -56,10 +58,12 @@ iframe{
     justify-content: center;
     height: 500px;
     width: 100%;
+    padding-left: 200px;
+    padding-right: 200px;
 }
 
 #information{
-    width: 90%;
+    
     height: auto;
     background-color: rgb(36, 36, 36);
     border-radius: 15px;
@@ -104,10 +108,4 @@ iframe{
     display: flex;
     justify-content: center;
     margin: 25px 0 50px 0;
-}
-
-.filler{
-    width: 90%;
-    padding-left: 0px; 
-    padding-right: 0px;
 }

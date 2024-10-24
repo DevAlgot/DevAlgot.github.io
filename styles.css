@@ -96,7 +96,7 @@ ul a:hover::after{
 .header.active-header ul a{
     color: #020307;
 }
-.header.active-header a{
+.header.active-header #name{
     color: #020307;
 }
 
@@ -104,14 +104,22 @@ ul a:hover::after{
     background: black;
 } 
 
+.header.active-header #search{
+    background-color: #e3e3e3;
+    color: rgb(67, 67, 67);
+}
+
 #input{
-    padding: .7rem 1rem .7rem 1rem;
+    padding: .5rem .5rem .5rem 1rem;
     background: rgb(198, 255, 255);
     font-weight: 400;
     border-radius: 2rem;
     border: none;
     color: rgb(0, 0, 0);
     width: 273px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .result{
@@ -400,14 +408,32 @@ ul a:hover::after{
     display: none;
 }
 
-#similar-holder{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
 #similar{
+    padding-top: 50px;
+    padding-left: 200px;
+    padding-right: 200px;
     display: flex;
-    justify-content: center;
-    width: 90%;
+    flex-direction: row;
+    justify-content: space-around;
     flex-wrap: wrap;
+    background-color: rgb(10, 10, 10);
+}
+
+#search{
+    background-color: rgb(198, 255, 255);
+    border: none;
+    padding: .15rem;
+}
+
+#search-button{
+    border: none;
+    background: black;
+    width: 5rem;
+    color: white;
+    height: 100%;
+    border-radius: 15px;
+}
+
+input:focus{
+    outline: none;
 }

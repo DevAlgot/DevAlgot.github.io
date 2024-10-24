@@ -25,9 +25,12 @@
                 <li><a href="">Coming</a></li>
                 <li><a href="">News</a></li>
             </ul>
-            <div id="search">
-                <input type="text" id="input" placeholder="Search Movie" onkeyup="search()">
-
+            <div id="input">
+                <input type="text" id="search" placeholder="Search Movie" onkeyup="search()">
+                <form action="javascript:;" onsubmit="search()">
+                    <button type="submit" id="search-button">Search</button>
+                </form>
+                
             </div>
         </div>
     </header>
