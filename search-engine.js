@@ -1,3 +1,12 @@
+const api_options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMTQ3YzQxZWU5OTA0OTA0NDA4OTQ0YzI0YzE0MmFjMiIsIm5iZiI6MTcyODc1OTQ2OS4yNTgyNywic3ViIjoiNjcwNTc1NzUzMjJkM2VhODMxMWQ1ZmQ0Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.W9-_PxxFBzTIMrLInXStocvXoNRooLtjqqjaieG9b-E'
+  }
+};
+
+
 
 async function getDataNewQuery(movieName) {
     var url = "https://api.themoviedb.org/3/search/multi?query="+movieName+"&include_adult=false&language=en-US&page=1";
@@ -33,9 +42,7 @@ async function getDataNewQuery(movieName) {
     .catch(err => console.error(err));
   
     return response;
-  }
-
-
+}
 
 
 function createSearchResult(data, index) {
@@ -105,25 +112,21 @@ function createSearchResult(data, index) {
   
     return resultDiv;
 }
+
+
 async function search() {
-    if(document.getElementById('searchResult')) document.getElementById('searchResult').remove();
+  //document.getElementById('searchResult').textContent = '';
 
-
-    const resultesDiv = document.createElement('div');
-    resultesDiv.id ='searchResult'
-    document.getElementById('search').appendChild(resultesDiv);
-    
-
-    //document.getElementById('searchResult').textContent = '';
-    
-    const input = document.getElementById('input');
-    const result = await getDataNewQuery(input.value, "name")
-
-
-        
-    for (let i = 0; i < Math.min( result.length, 10); i++) {
-        
-        document.getElementById('searchResult').appendChild(createSearchResult(result, i));
+  const input = document.getElementById('input');
+  input.addEventListener('keydown', (event) => {
+    if (event.key == 'Enter') {
+      console.log("Enter key pressed");
+      const title = input.value;
+      const url = `search.html?query=${encodeURIComponent(title)}`;
+      window.location.href = url;
     }
+  });
+
+
 }
 
