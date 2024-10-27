@@ -296,9 +296,6 @@ window.addEventListener("scroll", function () {
 });
 
 
-
-
-
 document.addEventListener('DOMContentLoaded', async () => {
 
   const movieLinks = [
