@@ -54,7 +54,7 @@ function createSearchResult(data, index) {
     searchPosterDiv.className = 'search-poster';
   
     const img = document.createElement('img');
-    img.src = "https://image.tmdb.org/t/p/original/"+data[index].poster_path;
+    img.src = ("https://image.tmdb.org/t/p/original/"+data[index].poster_path)|| "Images/image-not-found.png";
     img.alt = '';
     img.width = 342;
     img.height = 456;

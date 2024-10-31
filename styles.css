@@ -110,7 +110,8 @@ ul a:hover::after{
 }
 
 #input{
-    padding: .5rem .5rem .5rem 1rem;
+    padding: .2em;
+    padding-left: 1rem;
     background: rgb(198, 255, 255);
     font-weight: 400;
     border-radius: 2rem;
@@ -335,7 +336,7 @@ ul a:hover::after{
 
 
 #omslag{
-    height: 900px;
+    height: 98vh;
     width: auto;
 }
 
@@ -431,7 +432,7 @@ ul a:hover::after{
     width: 5rem;
     color: white;
     height: 100%;
-    border-radius: 15px;
+    border-radius: 2em;
 }
 
 input:focus{
