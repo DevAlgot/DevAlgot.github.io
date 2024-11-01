@@ -9,6 +9,9 @@
     font-optical-sizing: auto;
 }
 
+
+
+
 body{
     margin: 0;
 
@@ -437,4 +440,56 @@ ul a:hover::after{
 
 input:focus{
     outline: none;
+}
+
+
+@media (max-width: 320px) {
+    #omslag{
+        height: 40vh;
+    }
+    
+    .swiper-info{
+        display: none;
+    }
+
+    .filler{
+        padding-left: 35px;
+        padding-right: 35px; 
+    }
+
+    #movies{
+        padding-left: 35px;
+        padding-right: 35px; 
+    }
+
+    #series{
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    .movie{
+        width: 200px;
+    }    
+}
+
+@media (max-width: 1500px) and (min-width: 1300px){
+    #omslag{
+        height: 40vh;
+    }
+    
+    .movie{
+        width: 500px;
+    }
+    
+    .movie .description .movie-description .genre{
+        font-size: 2rem;
+        max-width: 200px;
+    }
+    .movie .description .movie-description p{
+        font-size: 2rem;
+    }
+
+    .bold{
+        font-size: 2.3rem;
+    }
 }
