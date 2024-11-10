@@ -18,6 +18,7 @@
     <header>
         <div class="header">
 
+            <svg id="dropdown" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
             <h1><a href="index.html" id="name"> <img src="favicon.ico" width="30" alt="Icon">Hemflix</a></h1>
             <ul>
                 <li><a href="">Home</a></li>
@@ -26,15 +27,17 @@
                 <li><a href="">News</a></li>
             </ul>
             <div id="input">
-                <input type="search" id="search" placeholder="Search Movie" onkeyup="search()">
-                <form action="javascript:;" onsubmit="search()">
-                    <button type="submit" id="search-button">Search</button>
-                </form>
-                
+                <input type="search" class="search" placeholder="Search Movie" onkeyup="search()">
+                <button onclick="searchClick()" type="button" class="search-button">Search</button>
             </div>
+            <button class="search-button">
+                Sign In
+            </button>
         </div>
     </header>
     <main>
+        
+        
 
         <swiper-container id="omslag" navigation="true" pagination="true" keyboard="true" mousewheel="true"
             css-mode="true">

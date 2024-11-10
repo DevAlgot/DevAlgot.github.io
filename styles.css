@@ -112,6 +112,19 @@ ul a:hover::after{
     color: rgb(67, 67, 67);
 }
 
+.header.active-header #dropdown{
+    fill: rgb(0, 0, 0);
+}
+
+#dropdown{
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    display: none;
+    fill: rgb(255, 255, 255);
+}
+
 #input{
     padding: .2em;
     padding-left: 1rem;
@@ -423,13 +436,13 @@ ul a:hover::after{
     background-color: rgb(10, 10, 10);
 }
 
-#search{
+.search{
     background-color: rgb(198, 255, 255);
     border: none;
     padding: .15rem;
 }
 
-#search-button{
+.search-button{
     border: none;
     background: black;
     width: 5rem;
@@ -442,15 +455,45 @@ input:focus{
     outline: none;
 }
 
+swiper-slide{
+    background-position: center;
+}
 
-@media (max-width: 320px) {
+#dropdown-selector{
+    display: flex;
+    margin-top: 70px;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    backdrop-filter: blur(10px);
+    height: 100vh;
+    top: 0;
+}
+
+#dropdown-selector ul{
+    display: flex;
+    row-gap: .75rem;
+    padding: 15px;
+    flex-direction: column;
+}
+
+#dropdown-selector #input{
+    margin-top: 20px;
+}
+
+@media (max-width: 500px) {
     #omslag{
-        height: 40vh;
+        height: 70vh;
     }
     
     .swiper-info{
         display: none;
     }
+
+    
 
     .filler{
         padding-left: 35px;
@@ -458,18 +501,41 @@ input:focus{
     }
 
     #movies{
-        padding-left: 35px;
-        padding-right: 35px; 
+        padding-left: 0;
+        padding-right: 0; 
+        align-items: center;
+        align-content: center
     }
 
     #series{
-        padding-left: 35px;
-        padding-right: 35px;
+        padding-left: 0;
+        padding-right: 0; 
+        align-items: center;
+        align-content: center
     }
 
     .movie{
-        width: 200px;
-    }    
+        width: 80vw;
+    }
+
+    #dropdown{
+        display: block;
+    }
+
+    .header{
+        padding: 15px 20px;
+    }
+
+    .header ul{
+        display: none;
+    }
+    .header #input{
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+
 }
 
 @media (max-width: 1500px) and (min-width: 1300px){
