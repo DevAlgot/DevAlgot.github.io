@@ -33,7 +33,7 @@ async function setUpMovies(movies) {
 
         const posterDiv = document.createElement('img');
         posterDiv.className = 'poster';
-        if (movie.poster_path == null) posterDiv.src = "E:/Algot/Documents/HTML/Movie Site/Images/img-not-found.png";
+        if (movie.poster_path == null) posterDiv.src = "../Images/image-not-found.png";
         else posterDiv.src = "https://image.tmdb.org/t/p/original/"+movie.poster_path;
 
 

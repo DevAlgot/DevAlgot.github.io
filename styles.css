@@ -107,7 +107,7 @@ ul a:hover::after{
     background: black;
 } 
 
-.header.active-header #search{
+.header.active-header .search{
     background-color: #e3e3e3;
     color: rgb(67, 67, 67);
 }
@@ -182,45 +182,6 @@ ul a:hover::after{
 
 }
 
-#searchResult{
-    background-color: #141414;
-    position: absolute;
-    top: 100%;
-    height: auto;
-    width: 273px;
-    border-radius: 19px;
-    display: flex;
-    row-gap: .8rem;
-    flex-direction: column;
-    padding:10px;
-}
-
-.searchResult-info{
-    color: grey;
-    display: flex;
-    font-size: smaller;
-}
-.searchResult-info p:not(:last-child)::after{
-    content: "·";
-    margin: .4rem;
-
-}
-
-
-.search-poster{
-    height: 3rem;
-    width: 3rem;
-    min-width: 0;
-    margin-inline-end: 1rem;
-}
-
-.search-poster img{
-    height: 3rem;
-    width: 3rem;
-    min-width: 0;
-    object-fit: cover;
-    border-radius: 9px;
-}
 
 ::placeholder{
     color: rgb(73, 92, 111);
@@ -449,6 +410,11 @@ ul a:hover::after{
     color: white;
     height: 100%;
     border-radius: 2em;
+    transition: all .2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.search-button:hover{
+    background-color: rgb(84, 84, 84);
 }
 
 input:focus{
@@ -484,7 +450,7 @@ swiper-slide{
     margin-top: 20px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 768px) {
     #omslag{
         height: 70vh;
     }
@@ -520,6 +486,7 @@ swiper-slide{
 
     #dropdown{
         display: block;
+        border-radius: 5px;
     }
 
     .header{
@@ -538,24 +505,8 @@ swiper-slide{
 
 }
 
-@media (max-width: 1500px) and (min-width: 1300px){
-    #omslag{
-        height: 40vh;
-    }
-    
+@media (max-width: 1500px) and (min-width: 1300px){    
     .movie{
         width: 500px;
-    }
-    
-    .movie .description .movie-description .genre{
-        font-size: 2rem;
-        max-width: 200px;
-    }
-    .movie .description .movie-description p{
-        font-size: 2rem;
-    }
-
-    .bold{
-        font-size: 2.3rem;
     }
 }
