@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     var background = document.getElementById("background");
     var iframe = document.createElement("iframe");
-    
-    iframe.src = `https://multiembed.mov/?video_id=${movie.imdb_id}`; //directstream.php?
+    //iframe.src = "https://www.NontonGo.win/embed/movie/"+movie.imdb_id;
+    iframe.src = `https://multiembed.mov/directstream.php?video_id=${movie.imdb_id}`; //directstream.php
     
     iframe.allowFullscreen = true;
     background.appendChild(iframe);

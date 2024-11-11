@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   var background = document.getElementById("background");
   var iframe = document.createElement("iframe");
-  iframe.src = `https://multiembed.mov/?video_id=${getQueryParam('title')}&e=${getQueryParam('e')}&s=${getQueryParam('s')}`;
+  iframe.src = `https://multiembed.mov/directstream.php?video_id=${getQueryParam('title')}&e=${getQueryParam('e')}&s=${getQueryParam('s')}`;
   iframe.allowFullscreen = true;
   background.appendChild(iframe);
 
