@@ -10,24 +10,26 @@ const options = {
 
 document.addEventListener("DOMContentLoaded", async function () {
 
-  var show = await getData(getQueryParam('title').split('/')[0]);
-  var seasonData = await getSeasonData(getQueryParam('title'), getQueryParam('s'));
+  const showID = (await getID(getQueryParam('title').split('/')[0]));
+  var show = await getDataNew(showID);
+
+  var seasonData = await getSeasonDataNew(showID, getQueryParam('s'));
 
   console.log(seasonData);
+  
 
-
-  document.title = "Watch " + show.Title + " Online";
+  document.title = "Watch " + show.name + " Online";
 
   var background = document.getElementById("background");
   var iframe = document.createElement("iframe");
-  iframe.src = `https://multiembed.mov/directstream.php?video_id=${getQueryParam('title')}&e=${getQueryParam('e')}&s=${getQueryParam('s')}`;
+  iframe.src = `https://multiembed.mov/?video_id=${getQueryParam('title')}&e=${getQueryParam('e')}&s=${getQueryParam('s')}`;
   iframe.allowFullscreen = true;
   background.appendChild(iframe);
 
 
   var divElement = document.createElement("div");
   var pElement = document.createElement("p");
-  var textNode = document.createTextNode(show.Title);
+  var textNode = document.createTextNode(show.name);
   pElement.appendChild(textNode);
 
   var spanElement = document.createElement("span");
@@ -42,67 +44,44 @@ document.addEventListener("DOMContentLoaded", async function () {
   //Next/Previous button
 
 
-  var informationHolder = document.getElementById("information-holder");
-  var information = document.createElement("div");
-  information.id = "information";
-
-  var cover = document.createElement("div");
-  cover.id = "cover";
-  cover.style.backgroundImage = "url(" + show.Poster + ")";
-  information.appendChild(cover);
-
-  var description = document.createElement("div");
-  description.id = "description";
-  var title = document.createElement("h2");
-  title.textContent = show.Title;
-  description.appendChild(title);
-
-  var categories = document.createElement("div");
-  categories.id = "Categories";
-  var genre = document.createElement("p");
-  genre.id = "Genre";
-  genre.textContent = "Genre: Action";
-  categories.appendChild(genre);
-  var duration = document.createElement("p");
-  duration.id = "Duration";
-  duration.textContent = "Duration: " + show.Runtime;
-  categories.appendChild(duration);
-  var country = document.createElement("p");
-  country.id = "Country";
-  country.textContent = "Country: " + show.Country;
-  categories.appendChild(country);
-  var director = document.createElement("p");
-  director.id = "Director";
-  director.textContent = "Director: " + show.Director;
-  categories.appendChild(director);
-  description.appendChild(categories);
-
-  var rating = document.createElement("div");
-  rating.id = "rating";
-  var ratingText = document.createElement("p");
-  //ratingText.textContent = show.Ratings[1];
-  rating.appendChild(ratingText);
-  description.appendChild(rating);
-
-  var paragraph = document.createElement("div");
-  var paragraphText = document.createTextNode(show.Plot);
-  paragraph.appendChild(paragraphText);
-  description.appendChild(paragraph);
-
-  information.appendChild(description);
-  informationHolder.appendChild(information);
+  var information = document.getElementById("information");
 
 
-  var episodesClassDiv = document.createElement("div");
+  //Information
+  information.innerHTML = `
+    <div id="cover" style="background-image: url(https://image.tmdb.org/t/p/original/${show.poster_path});"></div>
+      <div id="description">
+        <h2>${show.name}</h2>
+        <div id="Categories">
+          <p id="Genre">Genre: Action</p>
+          <p id="Duration">Duration: ${show.episode_run_time[0]} minutes</p>
+          <p id="Country">Country: ${show.origin_country[0]}</p>
+          <p id="Director">Director: ${show.created_by[0].name}</p>
+        </div>
+        <div id="rating">
+          <p></p>
+        </div>
+        <div> ${show.overview}</div>
+    </div>
+
+  `
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  // Episodes section
+  ///////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+
+  var episodesClassDiv = document.getElementById("episodes-class");
   episodesClassDiv.id = "episodes-class";
 
-  var seasonsDiv = document.createElement("div");
-  seasonsDiv.id = "seasons";
+  var seasonsDiv = document.getElementById("seasons")
 
-  var ulElement = document.createElement("ul");
+  var ulElement = document.getElementById("seasons-list");
 
   //Season click handler
-  for (let index = 1; index <= show.totalSeasons; index++) {
+  for (let index = 1; index <= show.number_of_seasons; index++) {
     var seasonLi = document.createElement("li");
     seasonLi.textContent = "Season " + index;
 
@@ -114,10 +93,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
 
       // Add the "active" class to the clicked season
-      ulElement.childNodes[index - 1].classList.add("active");
+      ulElement.childNodes[index].classList.add("active");
 
-      // Update the episodes based on the clicked season
-      updateEpisodes(await getSeasonData(getQueryParam('title').split('/')[0], index), show);
+      // Update the episodes based on the clicked season      
+      updateEpisodes(await getSeasonDataNew(showID, index), show);
+
       currentIndex = index;
     });
 
@@ -135,19 +115,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     var btn = document.getElementById("serie-action").children[j];
 
     btn.addEventListener('click', function () {
-      console.log("Clicked button " + j);
-
-      const title = show.imdbID;
+      const title = show.external_ids.imdb_id;
 
       if (j === 2) {
         var newEp = parseInt(getQueryParam("e")) + 1;
-        if (newEp >= seasonData.Episodes.length + 1) {
+        if (newEp >= seasonData.episodes.length + 1) {
           btn.classList = "inactive";
           return;
         }
 
         const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${getQueryParam('s')}&e=${newEp}`;
-        console.log(url);
         window.location.href = url;
       }
       if (j === 0) {
@@ -158,7 +135,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${getQueryParam('s')}&e=${(newEp)}`;
-        console.log(url);
         window.location.href = url;
       }
 
@@ -170,49 +146,29 @@ document.addEventListener("DOMContentLoaded", async function () {
   seasonsDiv.appendChild(ulElement);
   episodesClassDiv.appendChild(seasonsDiv);
 
-  var episodesDiv = document.createElement("div");
-  episodesDiv.id = "episodes";
+  var episodesDiv = document.getElementById('episodes');
+
+  updateEpisodes(seasonData, show)
 
 
-  for (let i = 0; i < seasonData.Episodes.length; i++) {
-    var episodeDiv = document.createElement("div");
-    episodeDiv.className = "episode";
 
-    var epNumberP = document.createElement("p");
-    epNumberP.className = "ep-number";
-    epNumberP.textContent = "Episode " + (i + 1);
-
-    var epNameP = document.createElement("p");
-    epNameP.className = "ep-name";
-    epNameP.textContent = seasonData.Episodes[i].Title;
-
-    episodeDiv.appendChild(epNumberP);
-    episodeDiv.appendChild(epNameP);
-    episodesDiv.appendChild(episodeDiv);
-
-    episodeDiv.addEventListener("click", async function () {
-      const title = show.imdbID;
-
-      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${currentIndex}&e=${i + 1}`;
-      console.log(url);
-
-      window.location.href = url;
-    });
-  }
 
   episodesClassDiv.appendChild(episodesDiv);
 
   document.getElementById("episodes-holder").appendChild(episodesClassDiv);
-
-  console.log(show);
-
-  console.log(await getSimilarDataNew(seasonData.id));
-
   //TODO: Change the api to TMDb for more detailed data and similar movies
-
+  console.log(show);
 
 });
 
+
+async function getID(imdb_id) {
+  const response = await fetch(`https://api.themoviedb.org/3/find/${imdb_id}?external_source=imdb_id`, options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+
+  return response.tv_results[0].id;
+}
 
 async function getSimilarDataNew(movieID) {
   var url = "https://api.themoviedb.org/3/tv/" + movieID + "/similar?language=en-US&page=1";
@@ -227,12 +183,12 @@ async function getSimilarDataNew(movieID) {
 }
 
 function updateEpisodes(seasonData, showData) {
-  document.getElementById("episodes").remove();
+  document.getElementById("episodes")?.remove();
 
   var episodesDiv = document.createElement("div");
   episodesDiv.id = "episodes";
 
-  for (let i = 0; i < seasonData.Episodes.length; i++) {
+  for (let i = 0; i < seasonData.episodes.length; i++) {
     var episodeDiv = document.createElement("div");
     episodeDiv.className = "episode";
 
@@ -242,14 +198,14 @@ function updateEpisodes(seasonData, showData) {
 
     var epNameP = document.createElement("p");
     epNameP.className = "ep-name";
-    epNameP.textContent = seasonData.Episodes[i].Title;
+    epNameP.textContent = seasonData.episodes[i].name;
 
     episodeDiv.appendChild(epNumberP);
     episodeDiv.appendChild(epNameP);
     episodesDiv.appendChild(episodeDiv);
 
     episodeDiv.addEventListener("click", async function () {
-      const title = showData.imdbID;
+      const title = showData.external_ids.imdb_id;
 
       const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${currentIndex}&e=${(i + 1)}`;
       console.log(url);
@@ -278,6 +234,22 @@ async function getData(movieID) {
   }
 }
 
+
+async function getDataNew(showID) {
+  const response = await fetch(`https://api.themoviedb.org/3/tv/${showID}?append_to_response=external_ids&language=en-US`, options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+
+  return response;
+}
+
+async function getSeasonDataNew(showID = "124364", season) {
+  fetch(`https://api.themoviedb.org/3/tv/124364/${showID}/${season}?append_to_response=external_ids?language=en-US`, options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+}
+
+
 async function getSeasonData(movieID, seasonIndex) {
   const url = "https://www.omdbapi.com/?i=" + movieID + "&apikey=264ef6fe&Season=" + seasonIndex;
   try {
@@ -293,6 +265,13 @@ async function getSeasonData(movieID, seasonIndex) {
   }
 }
 
+async function getSeasonDataNew(showID, seasonIndex) {
+  const response = await fetch(`https://api.themoviedb.org/3/tv/${showID}/season/${seasonIndex}?language=en-US`, options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+
+  return response;
+}
 
 
 async function setUpShows(shows) {
@@ -364,3 +343,37 @@ function getQueryParam(param) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(param);
 }
+
+document.querySelector('.custom-select-trigger').addEventListener('click', function() {
+  document.querySelector('.custom-options').classList.toggle('show');
+});
+
+document.querySelectorAll('.custom-option').forEach(option => {
+  option.addEventListener('click', function() {
+      // Remove the selected class from any previously selected option
+      document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+
+      // Add the selected class to the clicked option
+      this.classList.add('selected');
+
+      // Update the select trigger text
+      document.querySelector('.custom-select-trigger').textContent = this.textContent;
+
+      // Hide the options
+      document.querySelector('.custom-options').classList.remove('show');
+  });
+});
+
+
+
+`
+<div id="episodes-class">
+  <div id="seasons">
+    <ul>
+      <li class="active">Season 1</li>
+      <li>Season 2</li>
+      <li>Season 3</li>
+    </ul>
+  </div>
+<div id="episodes"><div class="episode"><p class="ep-number">Episode 1</p><p class="ep-name">Long Day's Journey Into Night</p></div><div class="episode"><p class="ep-number">Episode 2</p><p class="ep-name">The Way Things Are Now</p></div><div class="episode"><p class="ep-number">Episode 3</p><p class="ep-name">Choosing Day</p></div><div class="episode"><p class="ep-number">Episode 4</p><p class="ep-name">A Rock and a Farway</p></div><div class="episode"><p class="ep-number">Episode 5</p><p class="ep-name">Silhouettes</p></div><div class="episode"><p class="ep-number">Episode 6</p><p class="ep-name">Book 74</p></div><div class="episode"><p class="ep-number">Episode 7</p><p class="ep-name">All Good Things...</p></div><div class="episode"><p class="ep-number">Episode 8</p><p class="ep-name">Broken Windows, Open Doors</p></div><div class="episode"><p class="ep-number">Episode 9</p><p class="ep-name">Into the Woods</p></div><div class="episode"><p class="ep-number">Episode 10</p><p class="ep-name">Oh, the Places We'll Go</p></div></div></div>
+`
