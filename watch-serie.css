@@ -1,3 +1,14 @@
+
+@media screen and (max-width: 768px){
+    #main{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+
+
+
 #serie-action-holder{
     display: flex;
     height: 70px;
@@ -143,3 +154,146 @@ svg{
     margin: 0 0 0 0;
 }
 
+
+#episodes-class1 {
+    background-color: rgb(22, 22, 22);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.custom-select-trigger::after {
+    content: '▼';
+    padding-left: 10px
+}
+
+/*Dropdown*/
+.custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+    user-select: none;
+}
+
+.custom-select {
+    display: block;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    color: white;
+    border-radius: 4px;
+    height: 40px;
+}
+
+.custom-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 10;
+    display: none;
+}
+
+.custom-option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.custom-option:hover {
+    background-color: rgb(237, 237, 237);
+}
+
+.selected:hover {
+    background-color: #5f0985;
+}
+
+/*Dropdown end*/
+
+#episodes1 {
+    overflow-x: scroll;
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: rgb(10, 10, 10);
+    border-radius: 20px 20px 0 0;
+    padding: 3px;
+}
+
+.episode1 {
+    min-width: 13rem;
+    padding: 10px;
+    display: inline-grid;
+    transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.episode1:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+.episode1 img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.episode1-info {
+    background-color: rgb(30 22 22);
+    color: #ffffff;
+    padding: .25rem;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+
+}
+
+.episode1-info h2 {
+    margin: 0;
+    overflow-x: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+}
+
+.episode1-info div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.show {
+    display: flex;
+    flex-direction: column;
+}
+
+.selected {
+    background-color: #5f0985;
+    color: white;
+}
+
+/* width */
+#episodes1::-webkit-scrollbar {
+    height: 10px;
+}
+
+/* Track */
+#episodes1::-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar-corner{
+    background-color: red;
+}
+
+/* Handle */
+#episodes1::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+#episodes1::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

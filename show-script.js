@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   var seasonData = await getSeasonDataNew(showID, getQueryParam('s'));
 
   console.log(seasonData);
-  
+
 
   document.title = "Watch " + show.name + " Online";
 
@@ -109,12 +109,40 @@ document.addEventListener("DOMContentLoaded", async function () {
         const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${getQueryParam('s')}&e=${(newEp)}`;
         window.location.href = url;
       }
-
-
     });
   }
 
+//Seasons
+for (let i = 0; i < show.seasons.length; i++) {
+  document.querySelector(".custom-options").innerHTML+=`
+  <span class="custom-option ${i==0 ? "selected" : ""}" data-value="${i+1}">Season ${i+1}</span>
+  `;
+  
+}
+document.querySelector('.custom-select-trigger').addEventListener('click', function () {
+  document.querySelector('.custom-options').classList.toggle('show');
+  console.log("Clicked button");
+  
+});
 
+document.querySelectorAll('.custom-option').forEach(option => {
+  option.addEventListener('click', async function () {
+    // Remove the selected class from any previously selected option
+    document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+
+    // Add the selected class to the clicked option
+    this.classList.add('selected');
+    updateEpisodes(await getSeasonDataNew(showID, this.dataset.value), show);
+    currentIndex = this.dataset.value;
+
+    // Update the select trigger text
+    document.querySelector('.custom-select-trigger').textContent = this.textContent;
+
+
+    // Hide the options
+    document.querySelector('.custom-options').classList.remove('show');
+  });
+});
 
   var episodesDiv = document.getElementById('episodes');
 
@@ -160,7 +188,7 @@ function updateEpisodes(seasonData, showData) {
   for (let i = 0; i < seasonData.episodes.length; i++) {
     // New episodes
 
-    episodes_holder.innerHTML +=`
+    episodes_holder.innerHTML += `
     <div class="episode1">
         <img src="https://image.tmdb.org/t/p/original/${seasonData.episodes[i].still_path}" alt="">
         <div class="episode1-info">
@@ -280,29 +308,6 @@ function getQueryParam(param) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(param);
 }
-
-document.querySelector('.custom-select-trigger').addEventListener('click', function() {
-  document.querySelector('.custom-options').classList.toggle('show');
-});
-
-document.querySelectorAll('.custom-option').forEach(option => {
-  option.addEventListener('click', async function() {
-      // Remove the selected class from any previously selected option
-      document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
-
-      // Add the selected class to the clicked option
-      this.classList.add('selected');
-      updateEpisodes(await getSeasonDataNew(showID, this.dataset.value), show);
-      currentIndex = this.dataset.value;
-
-      // Update the select trigger text
-      document.querySelector('.custom-select-trigger').textContent = this.textContent;
-
-
-      // Hide the options
-      document.querySelector('.custom-options').classList.remove('show');
-  });
-});
 
 
 
