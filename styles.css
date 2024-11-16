@@ -356,7 +356,7 @@ ul a:hover::after{
     padding: 15px 15px;
     border: 0;
     border-radius: 15px;
-    background-color: #5f0985;
+    background-color: var(--main-color);
     text-decoration: none;
     transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
     width: fit-content;

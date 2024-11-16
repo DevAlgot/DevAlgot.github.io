@@ -8,8 +8,9 @@
     border-radius: 15px;
 }
 
-.custom-select-trigger::after { 
-    content: '▼'; padding-left: 10px
+.custom-select-trigger::after {
+    content: '▼';
+    padding-left: 10px
 }
 
 /*Dropdown*/
@@ -57,7 +58,7 @@
     background-color: rgb(237, 237, 237);
 }
 
-.selected:hover{
+.selected:hover {
     background-color: #5f0985;
 }
 
@@ -68,7 +69,7 @@
     display: flex;
     flex-wrap: nowrap;
     background-color: rgb(10, 10, 10);
-    border-radius: 20px;
+    border-radius: 20px 20px 0 0;
     padding: 3px;
 }
 
@@ -76,16 +77,12 @@
     min-width: 13rem;
     padding: 10px;
     display: inline-grid;
-    transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1); 
+    transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.episode1:hover{
-    transform: translateY(-10px);
-}
-
-.episode1:hover + .episode1-info{
-    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background-color: red;
+.episode1:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
 }
 
 .episode1 img {
@@ -98,10 +95,15 @@
     color: #ffffff;
     padding: .25rem;
     border-radius: 0 0 var(--episode-radius) var(--episode-radius);
+    overflow: hidden;
+
 }
 
 .episode1-info h2 {
     margin: 0;
+    overflow-x: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
 }
 
 .episode1-info div {
@@ -112,12 +114,36 @@
 
 
 
-.show{
+.show {
     display: flex;
     flex-direction: column;
 }
 
-.selected{
+.selected {
     background-color: #5f0985;
     color: white;
+}
+
+/* width */
+#episodes1::-webkit-scrollbar {
+    height: 10px;
+}
+
+/* Track */
+#episodes1::-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar-corner{
+    background-color: red;
+}
+
+/* Handle */
+#episodes1::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+#episodes1::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

@@ -8,10 +8,13 @@ const options = {
   }
 };
 
+var showID = "";
+var show = "";
+
 document.addEventListener("DOMContentLoaded", async function () {
 
-  const showID = (await getID(getQueryParam('title').split('/')[0]));
-  var show = await getDataNew(showID);
+  showID = (await getID(getQueryParam('title').split('/')[0]));
+  show = await getDataNew(showID);
 
   var seasonData = await getSeasonDataNew(showID, getQueryParam('s'));
 
@@ -73,41 +76,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
 
-  var episodesClassDiv = document.getElementById("episodes-class");
-  episodesClassDiv.id = "episodes-class";
-
   var seasonsDiv = document.getElementById("seasons")
 
   var ulElement = document.getElementById("seasons-list");
 
-  //Season click handler
-  for (let index = 1; index <= show.number_of_seasons; index++) {
-    var seasonLi = document.createElement("li");
-    seasonLi.textContent = "Season " + index;
-
-    seasonLi.addEventListener("click", async function () {
-      // Remove the "active" class from the currently active season
-      var activeSeason = document.querySelector("#seasons .active");
-      if (activeSeason) {
-        activeSeason.classList.remove("active");
-      }
-
-      // Add the "active" class to the clicked season
-      ulElement.childNodes[index].classList.add("active");
-
-      // Update the episodes based on the clicked season      
-      updateEpisodes(await getSeasonDataNew(showID, index), show);
-
-      currentIndex = index;
-    });
-
-
-    if (index == getQueryParam('s')) {
-      seasonLi.className = "active";
-    }
-
-    ulElement.appendChild(seasonLi);
-  }
 
 
   //Next and previous button
@@ -143,19 +115,12 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
 
-  seasonsDiv.appendChild(ulElement);
-  episodesClassDiv.appendChild(seasonsDiv);
 
   var episodesDiv = document.getElementById('episodes');
 
   updateEpisodes(seasonData, show)
 
 
-
-
-  episodesClassDiv.appendChild(episodesDiv);
-
-  document.getElementById("episodes-holder").appendChild(episodesClassDiv);
   //TODO: Change the api to TMDb for more detailed data and similar movies
   console.log(show);
 
@@ -188,51 +153,39 @@ function updateEpisodes(seasonData, showData) {
   var episodesDiv = document.createElement("div");
   episodesDiv.id = "episodes";
 
+  document.getElementById("episodes1")?.remove();
+  var episodes_holder = document.createElement("div");
+  episodes_holder.id = "episodes1";
+
   for (let i = 0; i < seasonData.episodes.length; i++) {
-    var episodeDiv = document.createElement("div");
-    episodeDiv.className = "episode";
+    // New episodes
 
-    var epNumberP = document.createElement("p");
-    epNumberP.className = "ep-number";
-    epNumberP.textContent = "Episode " + (i + 1);
+    episodes_holder.innerHTML +=`
+    <div class="episode1">
+        <img src="https://image.tmdb.org/t/p/original/${seasonData.episodes[i].still_path}" alt="">
+        <div class="episode1-info">
+            <h2>${seasonData.episodes[i].name}</h2>
+            <div>
+                <p>${seasonData.episodes[i].runtime} min</p>
+                <p>${seasonData.episodes[i].air_date.split("-")[0]}</p>
+            </div>
+        </div>
+    </div>
+    `;
+  }
 
-    var epNameP = document.createElement("p");
-    epNameP.className = "ep-name";
-    epNameP.textContent = seasonData.episodes[i].name;
-
-    episodeDiv.appendChild(epNumberP);
-    episodeDiv.appendChild(epNameP);
-    episodesDiv.appendChild(episodeDiv);
-
-    episodeDiv.addEventListener("click", async function () {
+  episodes_holder.childNodes.forEach(ep => {
+    ep.addEventListener('click', function () {
       const title = showData.external_ids.imdb_id;
-
-      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${currentIndex}&e=${(i + 1)}`;
-      console.log(url);
-
+      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${currentIndex}&e=${Array.from(episodes_holder.children).indexOf(ep) + 1}`;
       window.location.href = url;
     });
-  }
+  })
 
-  document.getElementById("episodes-class").appendChild(episodesDiv);
-
-  document.getElementById("episodes-holder").appendChild(document.getElementById("episodes-class"));
+  document.getElementById("episodes-class1").appendChild(episodes_holder);
 }
 
-async function getData(movieID) {
-  const url = "https://www.omdbapi.com/?i=" + movieID + "&apikey=264ef6fe";
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
 
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(error.message);
-  }
-}
 
 
 async function getDataNew(showID) {
@@ -247,22 +200,6 @@ async function getSeasonDataNew(showID = "124364", season) {
   fetch(`https://api.themoviedb.org/3/tv/124364/${showID}/${season}?append_to_response=external_ids?language=en-US`, options)
     .then(res => res.json())
     .catch(err => console.error(err));
-}
-
-
-async function getSeasonData(movieID, seasonIndex) {
-  const url = "https://www.omdbapi.com/?i=" + movieID + "&apikey=264ef6fe&Season=" + seasonIndex;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(error.message);
-  }
 }
 
 async function getSeasonDataNew(showID, seasonIndex) {
@@ -349,15 +286,18 @@ document.querySelector('.custom-select-trigger').addEventListener('click', funct
 });
 
 document.querySelectorAll('.custom-option').forEach(option => {
-  option.addEventListener('click', function() {
+  option.addEventListener('click', async function() {
       // Remove the selected class from any previously selected option
       document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
 
       // Add the selected class to the clicked option
       this.classList.add('selected');
+      updateEpisodes(await getSeasonDataNew(showID, this.dataset.value), show);
+      currentIndex = this.dataset.value;
 
       // Update the select trigger text
       document.querySelector('.custom-select-trigger').textContent = this.textContent;
+
 
       // Hide the options
       document.querySelector('.custom-options').classList.remove('show');
