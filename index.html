@@ -26,12 +26,10 @@
                 <li><a href="">Coming</a></li>
                 <li><a href="">News</a></li>
             </ul>
-            <div id="input">
-                <input type="search" class="search" placeholder="Search Movie" onkeyup="search()">
-                <button onclick="searchClick()" type="button" class="search-button">Search</button>
-            </div>
-            <div id="helper" style="width: 2.25rem;">
-            </div>
+           
+            <button class="search-button">
+                Sign In
+            </button>
         </div>
     </header>
     <main>
@@ -42,6 +40,19 @@
             css-mode="true">
             
         </swiper-container>
+
+        <div id="search-categories-container">
+            <div id="search-categories">
+                <div id="categories">
+
+                </div>
+                <div id="input">
+                    <input type="search" class="search" placeholder="Search Movie" onkeyup="search()">
+                    <button onclick="searchClick()" type="button" class="search-button">Search</button>
+                </div>
+            </div>
+        </div>
+
         <div id="movie-category" class="filler">
             <h2 style="color: white;">MOVIES</h2>
             <div class="seperator"></div>

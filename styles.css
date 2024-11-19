@@ -13,6 +13,9 @@
     --main-color: #5f0985;
 }
 
+main{
+    background-color: rgb(10, 10, 10);
+}
 
 body{
     margin: 0;
@@ -139,6 +142,8 @@ ul a:hover::after{
     height: 50px;
     display: flex;
     justify-content: space-between;
+    float: inline-end;
+    vertical-align: middle;
 }
 
 .result{
@@ -367,7 +372,7 @@ ul a:hover::after{
 }
 
 #movie2{
-    /*background-image: linear-gradient(180deg, rgba(179,222,208,0) 90%, rgba(10,10,10,1) 100%), url("Images/images.avif");*/
+
     background-size: cover;
     width: auto;
 }
@@ -463,6 +468,31 @@ swiper-slide{
     display: none;
 }
 
+
+
+#search-categories-container{
+    height: 5rem;
+    background-color: rgb(10, 10, 10);
+
+    padding-left: 210px;
+    padding-right: 210px;
+    margin-top: 40px;
+}
+
+#search-categories{
+    background-color: #141414;
+    height: 100%;
+    border-radius: 15px;
+}
+
+#categories{
+    width: 60%;
+    height: 100%;
+    background-color: rebeccapurple;
+    display: inline-block;
+    vertical-align: middle;
+}
+
 @media (max-width: 768px) {
     #omslag{
         height: 70vh;
@@ -520,10 +550,4 @@ swiper-slide{
 
 @media (max-width: 600px) {
 
-}
-
-@media (max-width: 1500px) and (min-width: 1300px){    
-    .movie{
-        width: 500px;
-    }
 }
