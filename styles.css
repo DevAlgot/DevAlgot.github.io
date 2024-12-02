@@ -11,6 +11,8 @@
 
 :root{
     --main-color: #5f0985;
+    --global-margin: 200px;
+    --global-radius:15px;
 }
 
 main{
@@ -130,21 +132,7 @@ ul a:hover::after{
     fill: rgb(255, 255, 255);
 }
 
-#input{
-    padding: .2em;
-    padding-left: 1rem;
-    background: rgb(198, 255, 255);
-    font-weight: 400;
-    border-radius: 2rem;
-    border: none;
-    color: rgb(0, 0, 0);
-    width: 273px;
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
-    float: inline-end;
-    vertical-align: middle;
-}
+
 
 .result{
     display: flex;
@@ -210,8 +198,8 @@ ul a:hover::after{
 
     background-color: rgb(10, 10, 10);
     align-items: flex-end;
-    padding-left: 210px;
-    padding-right: 210px;
+    padding-left: var(--global-margin);
+    padding-right: var(--global-margin);
 
     flex-direction: row;
     flex-wrap: wrap;
@@ -468,14 +456,28 @@ swiper-slide{
     display: none;
 }
 
+#input{
+    padding: .2em;
+    padding-left: 1rem;
+    background: rgb(198, 255, 255);
+    font-weight: 400;
+    border-radius: 2rem;
+    border: none;
+    color: rgb(0, 0, 0);
+    width: 273px;
+    height: 50px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-content: center;
+}
 
 
 #search-categories-container{
     height: 5rem;
     background-color: rgb(10, 10, 10);
 
-    padding-left: 210px;
-    padding-right: 210px;
+    padding-left: var(--global-margin);
+    padding-right: var(--global-margin);
     margin-top: 40px;
 }
 
@@ -483,14 +485,33 @@ swiper-slide{
     background-color: #141414;
     height: 100%;
     border-radius: 15px;
+    overflow: hidden;
+    padding: .6em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #categories{
     width: 60%;
-    height: 100%;
-    background-color: rebeccapurple;
-    display: inline-block;
     vertical-align: middle;
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+#categories a{
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1.5rem;
+    transition: all 0.15s ease-in-out;   
+    border-radius: var(--global-radius);
+}
+
+#categories a:hover{
+    background-color: #241c33;
 }
 
 @media (max-width: 768px) {
