@@ -321,6 +321,7 @@ ul a:hover::after{
     position: relative;
     background-size: cover;
     width: auto;
+    filter: contrast(1.1);
 }
 
 .swiper-info {
