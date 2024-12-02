@@ -514,6 +514,17 @@ swiper-slide{
     background-color: #241c33;
 }
 
+
+footer{
+    background-color: black;
+    color: white;
+    border-top: 1px solid rgb(50, 50, 50);
+}
+
+footer ul{
+    display: block;
+}
+
 @media (max-width: 768px) {
     #omslag{
         height: 70vh;
@@ -534,18 +545,25 @@ swiper-slide{
         padding-left: 0;
         padding-right: 0; 
         align-items: center;
-        align-content: center
+        align-content: center;
+        overflow: scroll;
+        flex-wrap: nowrap;
     }
 
     #series{
         padding-left: 0;
         padding-right: 0; 
         align-items: center;
-        align-content: center
+        align-content: center;
+        overflow: scroll;
+        flex-wrap: nowrap;
     }
 
     .movie{
         width: 40vw;
+    }
+    .movie .poster{
+        filter: contrast(1.1);
     }
 
     #dropdown{
