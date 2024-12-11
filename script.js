@@ -19,10 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   var popularMovies = await getPopularMoives();
 
-  for (let j = 0; j < 3; j++) {
-    setUpSlider(popularMovies.results[j], movieLinksPopular[j]);
-  }
-
   //Dropdown code here.
   document.getElementById("dropdown").addEventListener('click', function (event) {
     isOpen = !isOpen;
@@ -58,6 +54,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   for (let i = 0; i < 12; i++) {
     const popularMoviesFull = await (getDataNew(popularMovies.results[i].id));
     movieLinksPopular.push(popularMoviesFull.imdb_id);
+  }
+
+  for (let j = 0; j < 3; j++) {
+    setUpSlider(popularMovies.results[j], movieLinksPopular[j]);
   }
 
   setUpMovies(movieLinksPopular);
@@ -175,7 +175,7 @@ async function getDataFromID(id, movie) {
 
 async function setUpSlider(movie, id) {
   const container = document.getElementById("omslag");
-  console.log(movie);
+  console.log(id);
 
 
   const image = document.createElement("swiper-slide");
@@ -185,7 +185,7 @@ async function setUpSlider(movie, id) {
   image.innerHTML = `
   <div class="swiper-info">
     <h1 style="font-size: xxx-large; margin-bottom:1rem;">${movie.title}</h1>
-    <a href="watch.html?title=${encodeURIComponent(id)}">Watch Now</a>
+    <a href="watch.html?title=${encodeURIComponent(id)}">${id ? "Watch now" : "Coming soon"}</a>
   </div>`
 
   //role="group" aria-label="1 / 2" class="swiper-slide-active"

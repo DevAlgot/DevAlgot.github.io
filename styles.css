@@ -7,6 +7,7 @@
     scroll-behavior: smooth;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .2s;
 }
 
 :root{
@@ -48,6 +49,7 @@ header{
 #name{
     display: flex;
     align-items: center;
+    width: 200px;
 }
 
 #name img{
@@ -400,7 +402,14 @@ ul a:hover::after{
     background-color: rgb(198, 255, 255);
     border: none;
     padding: .15rem;
+    width: 100%;
 }
+
+#header-button{
+    width: 200px;
+    height: 100%;
+}
+
 
 .search-button{
     border: none;
@@ -408,13 +417,15 @@ ul a:hover::after{
     width: 5rem;
     color: white;
     height: 100%;
-    border-radius: 2em;
+    border-radius: 4em;
     transition: all .2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    font-weight: 600;
 }
 
 .search-button:hover{
-    background-color: rgb(84, 84, 84);
+    background-color: rgb(11, 18, 83);
 }
+
 
 input:focus{
     outline: none;
@@ -465,7 +476,7 @@ swiper-slide{
     border-radius: 2rem;
     border: none;
     color: rgb(0, 0, 0);
-    width: 273px;
+    width: 40%;
     height: 50px;
     display: inline-flex;
     justify-content: space-between;
@@ -502,6 +513,10 @@ swiper-slide{
     overflow-x: hidden;
 }
 
+#categories::after{
+    content: ":";
+}
+
 #categories a{
     color: white;
     text-decoration: none;
@@ -524,6 +539,24 @@ footer{
 
 footer ul{
     display: block;
+}
+
+.center{
+    justify-content: center;
+}
+
+.more{
+    background: none;
+    color: white;
+    border: none;
+    font-size: 2.5rem;
+    padding: 5px 10px
+
+}
+
+.more:hover{
+    background:#1f1f1f;
+    border-radius: var(--global-radius);
 }
 
 @media (max-width: 768px) {

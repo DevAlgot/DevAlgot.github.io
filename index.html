@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href../favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -25,11 +25,12 @@
                 <li><a href="#movie-category">Movies</a></li>
                 <li><a href="">Coming</a></li>
                 <li><a href="">News</a></li>
-            </ul>
-           
-            <button class="search-button">
-                Sign In
-            </button>
+            </ul>           
+             <div id="header-button">
+                <button class="search-button">
+                    Sign In
+                </button>
+            </div>
         </div>
     </header>
     <main>
@@ -37,7 +38,7 @@
         
 
         <swiper-container id="omslag" navigation="true" pagination="true" keyboard="true" mousewheel="true"
-            css-mode="true">
+            css-mode="true" autoplay-delay="7500">
             
         </swiper-container>
 
@@ -67,7 +68,11 @@
         <div id="movies">
 
             
-
+        </div>
+        <div class="filler center">
+            <button class="more">
+                See More
+            </button>
         </div>
         <div class="filler">
             <h2 style="color: white;">SERIES</h2>
