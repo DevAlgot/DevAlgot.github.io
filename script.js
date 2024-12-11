@@ -180,7 +180,7 @@ async function setUpSlider(movie, id) {
 
   const image = document.createElement("swiper-slide");
   image.classList = "movie1";
-  image.style = "background-image: linear-gradient(180deg, rgba(179, 222, 208, 0) 90%, rgba(10, 10, 10, 1) 100%), url(https://image.tmdb.org/t/p/original/" + movie.backdrop_path + ");"
+  image.style = "background-image: url(https://image.tmdb.org/t/p/original/" + movie.backdrop_path + ");"
   container.appendChild(image);
   image.innerHTML = `
   <div class="swiper-info">
@@ -269,6 +269,54 @@ async function setUpMovies(movies) {
   var forms = await Promise.all(moviePromises);
   forms.forEach(form => container.appendChild(form));
 }
+
+
+async function addMovies(startIndex, endIndex) {
+
+  for (let i = startIndex; i <= endIndex; i++) {
+    const element = array[i];
+    
+  }
+
+
+  const container = document.getElementById('movies');
+
+  const moviePromises = movies.map(async movie => {
+    var movie = await getDataNew(movie);
+
+    const form = document.createElement('form');
+
+    form.id = movie.imdb_id;
+
+    form.innerHTML += `
+        <button type="submit" class="movie-button">
+          <div class="movie">
+            <img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" />
+            <div class="description">
+              <p class="bold">${movie.title}</p>
+              <div class="movie-description">
+                <p>${movie.runtime} min</p>
+                <p class="genre">${movie.genres[0].name}</p>
+              </div>
+            </div>
+          </div>
+        </button>
+ 
+    `
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const title = movie.imdb_id;
+      const url = `watch.html?title=${encodeURIComponent(title)}`;
+      window.location.href = url;
+    });
+
+    return form;
+  });
+  var forms = await Promise.all(moviePromises);
+  forms.forEach(form => container.appendChild(form));
+}
+
 
 window.addEventListener("scroll", function () {
   document.querySelector(".header").classList.toggle("active-header", window.scrollY > 0 || isOpen);
