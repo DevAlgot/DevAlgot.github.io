@@ -8,6 +8,11 @@ const options = {
 
 var isOpen;
 
+var startIndex = 12;
+var endIndex = 24;
+
+var currentPage = 1;
+
 document.addEventListener('DOMContentLoaded', async () => {
   isOpen = false;
 
@@ -17,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   //setUpMovies(movieLinks);
   //setUpShows(showLinks);
 
-  var popularMovies = await getPopularMoives();
+  var popularMovies = await getPopularMovies();
 
   //Dropdown code here.
   document.getElementById("dropdown").addEventListener('click', function (event) {
@@ -56,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     movieLinksPopular.push(popularMoviesFull.imdb_id);
   }
 
-  for (let j = 0; j < 3; j++) {
+  for (let j = 0; j < 5; j++) {
     setUpSlider(popularMovies.results[j], movieLinksPopular[j]);
   }
 
@@ -95,8 +100,8 @@ async function getPopularShows() {
   return response;
 }
 
-async function getPopularMoives() {
-  const response = await fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options)
+async function getPopularMovies(pageIndex = 1) {
+  const response = await fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page='+pageIndex, options)
     .then(response => response.json())
     .catch(err => console.error(err));
 
@@ -107,7 +112,6 @@ async function getPopularMoives() {
 async function getTopRatedMovies() {
   const response = fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
     .then(response => response.json())
-    .then(response => console.log(response))
     .catch(err => console.error(err));
 
   return response;
@@ -271,18 +275,28 @@ async function setUpMovies(movies) {
 }
 
 
-async function addMovies(startIndex, endIndex) {
+async function addMovies() {
 
-  for (let i = startIndex; i <= endIndex; i++) {
-    const element = array[i];
+  var movies = await getPopularMovies(currentPage);
+  movies = movies.results;
+  console.log(movies);
+  
+  if(movies.length < endIndex)
+  {
+    currentPage++;
+    var t_movies = await getPopularMovies(currentPage);
+    console.log(t_movies);
     
+    for (let i = 0; i < t_movies.results.length; i++) {
+      movies.push(t_movies.results[i]);       
+    }
   }
+  
+  for (let i = startIndex; i < endIndex; i++) {
+    const container = document.getElementById('movies');
 
-
-  const container = document.getElementById('movies');
-
-  const moviePromises = movies.map(async movie => {
-    var movie = await getDataNew(movie);
+    if(movies[i].id == null)  return;
+    var movie = await getDataNew(movies[i].id);
 
     const form = document.createElement('form');
 
@@ -301,7 +315,6 @@ async function addMovies(startIndex, endIndex) {
             </div>
           </div>
         </button>
- 
     `
 
     form.addEventListener('submit', function (event) {
@@ -311,10 +324,12 @@ async function addMovies(startIndex, endIndex) {
       window.location.href = url;
     });
 
-    return form;
-  });
-  var forms = await Promise.all(moviePromises);
-  forms.forEach(form => container.appendChild(form));
+    container.appendChild(form);
+  }
+
+  startIndex += 12;
+  endIndex += 12;
+
 }
 
 
@@ -322,44 +337,6 @@ window.addEventListener("scroll", function () {
   document.querySelector(".header").classList.toggle("active-header", window.scrollY > 0 || isOpen);
 });
 
-
-document.addEventListener('DOMContentLoaded', async () => {
-
-  const movieLinks = [
-    "tt0068646", // Element 0, ID = tt0068646 i = 0
-    "tt0468569", // 1 i = 1
-    "tt0463234", // 2 ...
-  ];
-
-  var horrorMovies = await getHorrorMovies();
-
-
-  for (let i = 0; i < horrorMovies.results.length; i++) {
-    //console.log(horrorMovies.results[i].id);
-    var movie = await getMovieData(horrorMovies.results[i].id);
-    //console.log(movie);
-  }
-
-
-});
-
-async function getMovieData(movieID) {
-  const url = "https://api.themoviedb.org/3/movie/" + movieID + "?language=en-US";
-
-  return await fetch(url, options)
-    .then(res => res.json())
-    .catch(err => console.error(err));
-
-}
-
-async function getHorrorMovies() {
-  const url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
-
-  return await fetch(url, options)
-    .then(res => res.json())
-    .catch(err => console.error(err));
-
-}
 
 /*
 <form id="tt000000">
