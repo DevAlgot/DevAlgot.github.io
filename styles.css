@@ -228,15 +228,13 @@ ul a:hover::after{
 
 .movie {
     width: 230px;
-    margin: 10px;
     border-radius: 15px;
-    margin-bottom: 30px;
     transition: all .3s cubic-bezier(0.19, 1, 0.22, 1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative; /* Added relative positioning */
-    
+    z-index: 1;
 }
 
 .movie:hover {
@@ -284,6 +282,16 @@ ul a:hover::after{
     font-weight: normal;
 }
 
+.blur{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(.95);
+    filter: opacity(1) blur(15px);
+}
 
 #series{
     padding-top: 50px;
@@ -367,6 +375,8 @@ ul a:hover::after{
     border: none;
     padding: 0;
     margin: 0;
+    position: relative;
+    margin: 30px;
 }
 
 .genre{

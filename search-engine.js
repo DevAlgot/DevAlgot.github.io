@@ -131,10 +131,12 @@ async function search() {
 async function searchClick() {
   
     const input = document.getElementsByClassName('search')[isOpen ? 1 : 0];
-    input.value = "Hello World";
+    //input.value = "Hello World";
 
     const title = input.value;
+    console.log(title);
+    
     const url = `search.html?query=${encodeURIComponent(title)}`;
-    //window.location.href = url;
+    window.location.href = url;
 }
 

@@ -6,10 +6,18 @@ const options = {
   }
 };
 
+const movies = 10; // movies amount of movies at the homepage, max is 20.
+const sliderMovies = 5; //5 slides of the most popular movies
+var addativeMovies = 10; // number of movies to add
+
+
+
 var isOpen;
 
-var startIndex = 12;
-var endIndex = 24;
+var startIndex = 0;
+var endIndex = movies;
+
+
 
 var currentPage = 1;
 
@@ -21,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   //setUpMovies(movieLinks);
   //setUpShows(showLinks);
+  const container = document.getElementById('movies');
 
   var popularMovies = await getPopularMovies();
 
@@ -56,16 +65,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < movies; i++) {
     const popularMoviesFull = await (getDataNew(popularMovies.results[i].id));
-    movieLinksPopular.push(popularMoviesFull.imdb_id);
+    movieLinksPopular.push(popularMoviesFull);
   }
 
-  for (let j = 0; j < 5; j++) {
+  for (let j = 0; j < sliderMovies; j++) {
     setUpSlider(popularMovies.results[j], movieLinksPopular[j]);
   }
 
-  setUpMovies(movieLinksPopular);
+  //setUpMovies(movieLinksPopular);
+
+  addMovies();
 
   var popularShows = await getPopularShows();
   for (let i = 0; i < 20; i++) {
@@ -108,79 +119,8 @@ async function getPopularMovies(pageIndex = 1) {
   return response;
 }
 
-
-async function getTopRatedMovies() {
-  const response = fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
-    .then(response => response.json())
-    .catch(err => console.error(err));
-
-  return response;
-}
-
-
-async function getData(movieID, type = "") {
-  var url;
-
-  if (type === 'name') {
-    url = "https://www.omdbapi.com/?s=" + movieID + "&apikey=264ef6fe&page=1-2";
-  }
-  else {
-    url = "https://www.omdbapi.com/?i=" + movieID + "&apikey=264ef6fe";
-  }
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
-async function getDataNewQuery(movieName) {
-  var url = "https://api.themoviedb.org/3/search/multi?query=" + movieName + "&include_adult=false&language=en-US&page=1";
-
-  const response = await fetch(url, options)
-    .then(response => response.json())
-    .catch(err => console.error(err));
-
-  var results = [];
-
-  for (let i = 0; i < Math.min(response.results.length, 10); i++) {
-    results.push(await getDataFromID(response.results[i].id, response.results[i].media_type));
-    //console.log(response.results[i]);      
-  }
-  //sconsole.log(results);
-
-  return results;
-}
-
-async function getDataFromID(id, movie) {
-  var url
-  if (movie === 'movie') {
-    url = "https://api.themoviedb.org/3/movie/" + id + "&include_adult=false&language=en-US&append_to_response=external_ids";
-  }
-  else {
-    url = "https://api.themoviedb.org/3/tv/" + id + "?append_to_response=external_ids";
-  }
-
-  const response = await fetch(url, options)
-    .then(response => response.json())
-    //.then(response => console.log(response))
-    .catch(err => console.error(err));
-
-  return response;
-}
-
-
 async function setUpSlider(movie, id) {
   const container = document.getElementById("omslag");
-  console.log(id);
-
 
   const image = document.createElement("swiper-slide");
   image.classList = "movie1";
@@ -202,7 +142,7 @@ async function setUpShows(shows) {
 
   var showPromises = shows.map(async show => {
     if (show.external_ids.imdb_id == null) return;
-    if (container.childElementCount >= 12) return;
+    if (container.childElementCount >= movies) return;
     //var movie = await getDataFromID(movie.external_ids.imdb_id);
     const form = document.createElement('form');
 
@@ -220,6 +160,7 @@ async function setUpShows(shows) {
               </div>
             </div>
           </div>
+          <img class="poster blur" src="https://image.tmdb.org/t/p/original/${show.poster_path})" />
         </button>
     `
 
@@ -235,102 +176,74 @@ async function setUpShows(shows) {
   });
 }
 
-async function setUpMovies(movies) {
-  const container = document.getElementById('movies');
+async function createMovieForm(movie) {
+  
+  const form = document.createElement('form');
+  form.id = movie.imdb_id;
 
-  const moviePromises = movies.map(async movie => {
-    var movie = await getDataNew(movie);
-
-    const form = document.createElement('form');
-
-    form.id = movie.imdb_id;
-
-    form.innerHTML += `
-        <button type="submit" class="movie-button">
-          <div class="movie">
-            <img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" />
-            <div class="description">
-              <p class="bold">${movie.title}</p>
-              <div class="movie-description">
-                <p>${movie.runtime} min</p>
-                <p class="genre">${movie.genres[0].name}</p>
-              </div>
-            </div>
+  form.innerHTML = `
+    <button type="submit" class="movie-button">
+      <div class="movie">
+        <img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path}" />
+        <div class="description">
+          <p class="bold">${movie.title}</p>
+          <div class="movie-description">
+            <p>${movie.runtime} min</p>
+            <p class="genre">${movie.genres[0]?.name || 'Unknown Genre'}</p>
           </div>
-        </button>
- 
-    `
+        </div>
+      </div>
+      <img class="poster blur" src="https://image.tmdb.org/t/p/original/${movie.poster_path}" />
+    </button>
+  `;
 
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const title = movie.imdb_id;
-      const url = `watch.html?title=${encodeURIComponent(title)}`;
-      window.location.href = url;
-    });
-
-    return form;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const title = movie.imdb_id;
+    const url = `watch.html?title=${encodeURIComponent(title)}`;
+    window.location.href = url;
   });
-  var forms = await Promise.all(moviePromises);
-  forms.forEach(form => container.appendChild(form));
+
+  return form;
 }
 
-
+let t_movies = [];
 async function addMovies() {
-
-  var movies = await getPopularMovies(currentPage);
-  movies = movies.results;
-  console.log(movies);
+  const container = document.getElementById('movies');
+  const requiredMovies = endIndex - startIndex;
   
-  if(movies.length < endIndex)
-  {
-    currentPage++;
-    var t_movies = await getPopularMovies(currentPage);
-    console.log(t_movies);
-    
-    for (let i = 0; i < t_movies.results.length; i++) {
-      movies.push(t_movies.results[i]);       
-    }
-  }
-  
-  for (let i = startIndex; i < endIndex; i++) {
-    const container = document.getElementById('movies');
 
-    if(movies[i].id == null)  return;
-    var movie = await getDataNew(movies[i].id);
-
-    const form = document.createElement('form');
-
-    form.id = movie.imdb_id;
-
-    form.innerHTML += `
-        <button type="submit" class="movie-button">
-          <div class="movie">
-            <img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" />
-            <div class="description">
-              <p class="bold">${movie.title}</p>
-              <div class="movie-description">
-                <p>${movie.runtime} min</p>
-                <p class="genre">${movie.genres[0].name}</p>
-              </div>
-            </div>
-          </div>
-        </button>
-    `
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const title = movie.imdb_id;
-      const url = `watch.html?title=${encodeURIComponent(title)}`;
-      window.location.href = url;
-    });
-
-    container.appendChild(form);
+  // Fetch and gather enough movies
+  if (t_movies.length < requiredMovies) {
+    const movieBatch = await getPopularMovies(currentPage++);
+    t_movies.push(...movieBatch.results);   
   }
 
-  startIndex += 12;
-  endIndex += 12;
+
+  //Debugging purposes
+  for (let i = 0; i < t_movies.length; i++) {
+    console.log(t_movies[i].title);
+  } 
+
+  // Process and display the movies
+  const movieDetailsPromises = t_movies.slice(0, requiredMovies).map(movie => getDataNew(movie.id));
+
+  // Fetch all movie details in parallel
+  const movieDetailsBatch = await Promise.all(movieDetailsPromises);
+
+  // Create and append movie forms in a batch
+  const forms = await Promise.all(movieDetailsBatch.map(createMovieForm));
+  forms.forEach(form => container.appendChild(form));
+  
+  t_movies = t_movies.slice(requiredMovies)
+
+
+  // Update indexes for the next batch
+  startIndex += addativeMovies;
+  endIndex += addativeMovies;
 
 }
+
 
 
 window.addEventListener("scroll", function () {
