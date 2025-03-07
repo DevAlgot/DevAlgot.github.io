@@ -17,7 +17,7 @@
 }
 
 main{
-    background-color: rgb(10, 10, 10);
+    background-color: #e3e3e3;
 }
 
 body{
@@ -198,13 +198,13 @@ ul a:hover::after{
     justify-content: flex-start;
     height: 60px;
 
-    background-color: rgb(10, 10, 10);
     align-items: flex-end;
-    padding-left: var(--global-margin);
-    padding-right: var(--global-margin);
+    width: calc(100% - var(--global-margin));
+    margin: auto;
 
     flex-direction: row;
     flex-wrap: wrap;
+    color: black;
 }
 
 .seperator{
@@ -216,65 +216,64 @@ ul a:hover::after{
 
 #movies{
     padding-top: 50px;
-    padding-left: 200px;
-    padding-right: 200px;
+    width: calc(100% - var(--global-margin));
+    margin: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: wrap;
 
-    background-color: rgb(10, 10, 10);
 }
 
 .movie {
     width: 230px;
-    margin: 10px;
-    border-radius: 15px;
+    border-radius: 0;
     margin-bottom: 30px;
     transition: all .3s cubic-bezier(0.19, 1, 0.22, 1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative; /* Added relative positioning */
-    
 }
 
-.movie:hover {
-    transform: scale(1.05);
-}
 
+.movie .movie-poster{
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    height: 345px;
+    overflow: hidden;
+}
 
 .movie .poster {  
     background-size: cover;
+    width: 100%;
     overflow: hidden;
     background-repeat: no-repeat;
-    transition: all .3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all .2s cubic-bezier(0.19, 1, 0.22, 1)linear;
 }
 
-.movie:hover .poster{
-    transform: scale(1.1);
+.movie:hover .description p{
+    text-decoration: underline;
 }
 
 .movie:hover .description{
     opacity: 1;
 }
 
-.movie .description {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    color: white;
-    padding: 1rem;
-    padding-top: 100%;
-    padding-bottom: 0px;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    z-index: 10;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%);
-    opacity: 0;
-    transition: all .3s cubic-bezier(0.075, 0.82, 0.165, 1);
+.movie:hover .poster{
+    transform: scale(1.05);
+}
 
+.movie .description {
+    color: white;
+    z-index: 10;
+    opacity: 1;
+    padding: .2rem 0rem;
+}
+
+.movie .description p{
+    color: #241c33;
 }
 
 .movie .description .movie-description {
@@ -284,24 +283,26 @@ ul a:hover::after{
     font-weight: normal;
 }
 
+.movie-description p{
+    font-size: large;
+    margin: 0;
+}
+
 
 #series{
     padding-top: 50px;
-    padding-left: 200px;
-    padding-right: 200px;
+    width: calc(100% - var(--global-margin));
+    margin: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: wrap;
-
-    background-color: rgb(10, 10, 10);
 }
 
 .bold{
     font-size: 1.3rem;
     font-weight: bold;
     margin: 0px;
-    margin-top: revert;
     overflow-x:hidden;
     text-wrap: nowrap;
     text-overflow: ellipsis;
@@ -480,10 +481,8 @@ swiper-slide{
 
 #search-categories-container{
     height: 5rem;
-    background-color: rgb(10, 10, 10);
-
-    padding-left: var(--global-margin);
-    padding-right: var(--global-margin);
+    width: calc(100% - var(--global-margin));
+    margin: auto;
     margin-top: 40px;
 }
 

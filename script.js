@@ -241,14 +241,14 @@ async function setUpMovies(movies) {
   const moviePromises = movies.map(async movie => {
     var movie = await getDataNew(movie);
 
-    const form = document.createElement('form');
+    const form = document.createElement('a');
 
-    form.id = movie.imdb_id;
+    form.href = `/watch.html?title=${movie.imdb_id}`;
 
     form.innerHTML += `
-        <button type="submit" class="movie-button">
+        
           <div class="movie">
-            <img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" />
+            <div class="movie-poster"><img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" /></div>
             <div class="description">
               <p class="bold">${movie.title}</p>
               <div class="movie-description">
@@ -257,17 +257,9 @@ async function setUpMovies(movies) {
               </div>
             </div>
           </div>
-        </button>
  
     `
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const title = movie.imdb_id;
-      const url = `watch.html?title=${encodeURIComponent(title)}`;
-      window.location.href = url;
-    });
-
+    
     return form;
   });
   var forms = await Promise.all(moviePromises);
@@ -298,12 +290,12 @@ async function addMovies() {
     if(movies[i].id == null)  return;
     var movie = await getDataNew(movies[i].id);
 
-    const form = document.createElement('form');
+    const form = document.createElement('a');
 
-    form.id = movie.imdb_id;
+    form.href = `/watch.html?title=${movie.imdb_id}`;
 
     form.innerHTML += `
-        <button type="submit" class="movie-button">
+        
           <div class="movie">
             <img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" />
             <div class="description">
@@ -314,16 +306,8 @@ async function addMovies() {
               </div>
             </div>
           </div>
-        </button>
+ 
     `
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const title = movie.imdb_id;
-      const url = `watch.html?title=${encodeURIComponent(title)}`;
-      window.location.href = url;
-    });
-
     container.appendChild(form);
   }
 
