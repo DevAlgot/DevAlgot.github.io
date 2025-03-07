@@ -6,10 +6,18 @@ const options = {
   }
 };
 
+const movies = 10; // movies amount of movies at the homepage, max is 20.
+const sliderMovies = 5; //5 slides of the most popular movies
+var addativeMovies = 10; // number of movies to add
+
+
+
 var isOpen;
 
-var startIndex = 12;
-var endIndex = 24;
+var startIndex = 0;
+var endIndex = movies;
+
+
 
 var currentPage = 1;
 
@@ -21,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   //setUpMovies(movieLinks);
   //setUpShows(showLinks);
+  const container = document.getElementById('movies');
 
   var popularMovies = await getPopularMovies();
 
@@ -56,16 +65,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < movies; i++) {
     const popularMoviesFull = await (getDataNew(popularMovies.results[i].id));
-    movieLinksPopular.push(popularMoviesFull.imdb_id);
+    movieLinksPopular.push(popularMoviesFull);
   }
 
-  for (let j = 0; j < 5; j++) {
+  for (let j = 0; j < sliderMovies; j++) {
     setUpSlider(popularMovies.results[j], movieLinksPopular[j]);
   }
 
-  setUpMovies(movieLinksPopular);
+  //setUpMovies(movieLinksPopular);
+
+  addMovies();
 
   var popularShows = await getPopularShows();
   for (let i = 0; i < 20; i++) {
@@ -108,79 +119,8 @@ async function getPopularMovies(pageIndex = 1) {
   return response;
 }
 
-
-async function getTopRatedMovies() {
-  const response = fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
-    .then(response => response.json())
-    .catch(err => console.error(err));
-
-  return response;
-}
-
-
-async function getData(movieID, type = "") {
-  var url;
-
-  if (type === 'name') {
-    url = "https://www.omdbapi.com/?s=" + movieID + "&apikey=264ef6fe&page=1-2";
-  }
-  else {
-    url = "https://www.omdbapi.com/?i=" + movieID + "&apikey=264ef6fe";
-  }
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
-async function getDataNewQuery(movieName) {
-  var url = "https://api.themoviedb.org/3/search/multi?query=" + movieName + "&include_adult=false&language=en-US&page=1";
-
-  const response = await fetch(url, options)
-    .then(response => response.json())
-    .catch(err => console.error(err));
-
-  var results = [];
-
-  for (let i = 0; i < Math.min(response.results.length, 10); i++) {
-    results.push(await getDataFromID(response.results[i].id, response.results[i].media_type));
-    //console.log(response.results[i]);      
-  }
-  //sconsole.log(results);
-
-  return results;
-}
-
-async function getDataFromID(id, movie) {
-  var url
-  if (movie === 'movie') {
-    url = "https://api.themoviedb.org/3/movie/" + id + "&include_adult=false&language=en-US&append_to_response=external_ids";
-  }
-  else {
-    url = "https://api.themoviedb.org/3/tv/" + id + "?append_to_response=external_ids";
-  }
-
-  const response = await fetch(url, options)
-    .then(response => response.json())
-    //.then(response => console.log(response))
-    .catch(err => console.error(err));
-
-  return response;
-}
-
-
 async function setUpSlider(movie, id) {
   const container = document.getElementById("omslag");
-  console.log(id);
-
 
   const image = document.createElement("swiper-slide");
   image.classList = "movie1";
@@ -202,7 +142,7 @@ async function setUpShows(shows) {
 
   var showPromises = shows.map(async show => {
     if (show.external_ids.imdb_id == null) return;
-    if (container.childElementCount >= 12) return;
+    if (container.childElementCount >= movies) return;
     //var movie = await getDataFromID(movie.external_ids.imdb_id);
     const form = document.createElement('form');
 
@@ -220,6 +160,7 @@ async function setUpShows(shows) {
               </div>
             </div>
           </div>
+          <img class="poster blur" src="https://image.tmdb.org/t/p/original/${show.poster_path})" />
         </button>
     `
 
@@ -266,7 +207,7 @@ async function setUpMovies(movies) {
   forms.forEach(form => container.appendChild(form));
 }
 
-
+let t_movies = [];
 async function addMovies() {
 
   var movies = await getPopularMovies(currentPage);
@@ -315,6 +256,7 @@ async function addMovies() {
   endIndex += 12;
 
 }
+
 
 
 window.addEventListener("scroll", function () {

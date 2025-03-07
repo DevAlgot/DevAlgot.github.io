@@ -368,6 +368,8 @@ ul a:hover::after{
     border: none;
     padding: 0;
     margin: 0;
+    position: relative;
+    margin: 30px;
 }
 
 .genre{
