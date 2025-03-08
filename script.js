@@ -6,9 +6,9 @@ const options = {
   }
 };
 
-const movies = 10; // movies amount of movies at the homepage, max is 20.
+const movies = 12; // movies amount of movies at the homepage, max is 20.
 const sliderMovies = 5; //5 slides of the most popular movies
-var addativeMovies = 10; // number of movies to add
+var addativeMovies = 12; // number of movies to add
 
 
 
@@ -160,7 +160,6 @@ async function setUpShows(shows) {
               </div>
             </div>
           </div>
-          <img class="poster blur" src="https://image.tmdb.org/t/p/original/${show.poster_path})" />
         </button>
     `
 
@@ -176,36 +175,6 @@ async function setUpShows(shows) {
   });
 }
 
-async function setUpMovies(movies) {
-  const container = document.getElementById('movies');
-
-  const moviePromises = movies.map(async movie => {
-    var movie = await getDataNew(movie);
-
-    const form = document.createElement('a');
-
-    form.href = `/watch.html?title=${movie.imdb_id}`;
-
-    form.innerHTML += `
-        
-          <div class="movie">
-            <div class="movie-poster"><img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" /></div>
-            <div class="description">
-              <p class="bold">${movie.title}</p>
-              <div class="movie-description">
-                <p>${movie.runtime} min</p>
-                <p class="genre">${movie.genres[0].name}</p>
-              </div>
-            </div>
-          </div>
- 
-    `
-    
-    return form;
-  });
-  var forms = await Promise.all(moviePromises);
-  forms.forEach(form => container.appendChild(form));
-}
 
 let t_movies = [];
 async function addMovies() {
@@ -238,7 +207,7 @@ async function addMovies() {
     form.innerHTML += `
         
           <div class="movie">
-            <img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" />
+            <div class="movie-poster"><img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" /></div>
             <div class="description">
               <p class="bold">${movie.title}</p>
               <div class="movie-description">
