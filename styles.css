@@ -36,7 +36,8 @@ header{
     align-items: center;
     
     position:fixed ;
-        
+    
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0) 20%, rgb(48 42 42 / 40%) 100%);
     height: 70px;
     width: 100%;
     justify-content: space-between;
@@ -58,7 +59,7 @@ header{
 }
 
 .active-header{
-    background-color: rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
     box-shadow: 0 0 4px rgba(14, 55, 55, 15%);
 }
 
@@ -247,7 +248,7 @@ ul a:hover::after{
 
 .movie .poster {  
     background-size: cover;
-    width: 100%;
+    height: 100%;
     overflow: hidden;
     background-repeat: no-repeat;
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
@@ -373,7 +374,7 @@ ul a:hover::after{
 }
 
 .genre{
-    max-width: 100px;
+    max-width: 70px;
     text-wrap: nowrap;
     overflow-x: hidden;
     text-overflow: ellipsis;
@@ -386,13 +387,12 @@ ul a:hover::after{
 
 #similar{
     padding-top: 50px;
-    padding-left: 200px;
-    padding-right: 200px;
+    width: calc(100% - var(--global-margin));
+    margin: auto;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
-    background-color: rgb(10, 10, 10);
 }
 
 .search{
@@ -409,6 +409,7 @@ ul a:hover::after{
 
 
 .search-button{
+    margin-left: 17px;
     border: none;
     background: var(--main-color);
     width: 5rem;
@@ -417,10 +418,18 @@ ul a:hover::after{
     border-radius: 4em;
     transition: all .2s cubic-bezier(0.075, 0.82, 0.165, 1);
     font-weight: 600;
+    cursor: pointer;
+}
+
+.secondary{
+    border: solid var(--main-color) 2px;
+    background: none;
+    color: black;
 }
 
 .search-button:hover{
     background-color: rgb(11, 18, 83);
+    color: white;
 }
 
 
@@ -555,6 +564,29 @@ footer ul{
 .more:hover{
     background:#1f1f1f;
     border-radius: var(--global-radius);
+}
+
+
+#login-container{
+    position: absolute;
+    z-index: 100000;
+    left: 0; 
+    right: 0; 
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+}
+
+#login{
+    background-color: #a7edd3;
+    border-radius: 20px;
+    position: relative;
+    width: fit-content;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px;
 }
 
 @media (max-width: 768px) {
