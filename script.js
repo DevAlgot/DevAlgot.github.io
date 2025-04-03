@@ -7,7 +7,7 @@ const options = {
 };
 
 const movies = 12; // movies amount of movies at the homepage, max is 20.
-const sliderMovies = 5; //5 slides of the most popular movies
+const sliderMovies = 10; //5 slides of the most popular movies
 var addativeMovies = 12; // number of movies to add
 
 
@@ -17,7 +17,7 @@ var isOpen;
 var startIndex = 0;
 var endIndex = movies;
 
-
+const cardTemplate = document.getElementById("movie-temp");
 
 var currentPage = 1;
 
@@ -128,7 +128,7 @@ async function setUpSlider(movie, id) {
   container.appendChild(image);
   image.innerHTML = `
   <div class="swiper-info">
-    <h1 style="font-size: xxx-large; margin-bottom:1rem;">${movie.title}</h1>
+    <h1 style="font-size: xxx-large; margin-bottom:1rem; mix-blend-mode: difference;">${movie.title}</h1>
     <a href="watch.html?title=${encodeURIComponent(id)}">${id ? "Watch now" : "Coming soon"}</a>
   </div>`
 
@@ -178,6 +178,8 @@ async function setUpShows(shows) {
 
 let t_movies = [];
 async function addMovies() {
+  const container = document.getElementById('movies');
+  
 
   var movies = await getPopularMovies(currentPage);
   movies = movies.results;
@@ -187,42 +189,40 @@ async function addMovies() {
   {
     currentPage++;
     var t_movies = await getPopularMovies(currentPage);
-    console.log(t_movies);
+    //console.log(t_movies);
     
     for (let i = 0; i < t_movies.results.length; i++) {
       movies.push(t_movies.results[i]);       
     }
   }
+  console.log(endIndex);
+
   
-  for (let i = startIndex; i < endIndex; i++) {
-    const container = document.getElementById('movies');
 
-    if(movies[i].id == null)  return;
+  for (let i = 0; i < 12; i++) {   
+    if(!movies[i]) console.log("Couldn't find movie at index " + i);
+    ;
+    //if(movie.imdb_id == null) return;
     var movie = await getDataNew(movies[i].id);
-
-    const form = document.createElement('a');
-
+    const form = cardTemplate.content.cloneNode(true);
+    
+    
+    //const form = document.createElement('a');'
+    
     form.href = `/watch.html?title=${movie.imdb_id}`;
+    form.querySelector("a").href = `/watch.html?title=${movie.imdb_id}`;
+    form.getElementById("poster").src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
+    form.getElementById("title").innerHTML = movie.title;
+    form.getElementById("genre").innerHTML = movie.genres[0]?.name;
+    form.getElementById("runtime").innerHTML = movie.runtime + " min";
+    
 
-    form.innerHTML += `
-        
-          <div class="movie">
-            <div class="movie-poster"><img class="poster" src="https://image.tmdb.org/t/p/original/${movie.poster_path})" /></div>
-            <div class="description">
-              <p class="bold">${movie.title}</p>
-              <div class="movie-description">
-                <p>${movie.runtime} min</p>
-                <p class="genre">${movie.genres[0].name}</p>
-              </div>
-            </div>
-          </div>
- 
-    `
     container.appendChild(form);
   }
 
   startIndex += 12;
   endIndex += 12;
+
 
 }
 

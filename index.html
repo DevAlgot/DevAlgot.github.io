@@ -15,32 +15,53 @@
 </head>
 
 <body>
-
+    <!---
+    <section id="login-container">
+        <div id="login">
+            <h2>Welcome back!</h2>
+            <div>
+                <p>Enter email</p>
+                <input placeholder="john.doe@example.com" type="text">
+            </div>
+            <div>
+                <p>Enter password</p>
+                <input placeholder="" type="password">
+            </div>
+        </div>
+    </section>
+    --->
     <header>
         <div class="header">
 
-            <svg id="dropdown" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
-            <h1><a href="index.html" id="name"> <img src="favicon.ico" width="30" alt="Icon"><p class="name">Hem</p>flix</a></h1>
+            <svg id="dropdown" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path>
+            </svg>
+            <h1><a href="index.html" id="name"> <img src="favicon.ico" width="30" alt="Icon">
+                    <p class="name">Hem</p>flix
+                </a></h1>
             <ul>
                 <li><a href="">Home</a></li>
                 <li><a href="#movie-category">Movies</a></li>
                 <li><a href="">Coming</a></li>
                 <li><a href="">News</a></li>
-            </ul>           
-             <div id="header-button">
+            </ul>
+            <div id="header-button">
                 <button class="search-button">
-                    Sign In
+                    Log In
+                </button>
+                <button class="search-button secondary">
+                    Sign Up
                 </button>
             </div>
         </div>
     </header>
     <main>
-        
-        
+
+
 
         <swiper-container id="omslag" navigation="true" pagination="true" keyboard="true" mousewheel="true"
-            css-mode="true" >
-            
+            css-mode="true">
+
         </swiper-container>
 
         <div id="search-categories-container">
@@ -66,9 +87,23 @@
             <h2>MOVIES</h2>
             <div class="seperator"></div>
         </div>
-        <div class="grid" id="movies" >
 
-            
+        <div class="grid" id="movies">
+
+            <template id="movie-temp">
+                <a href="">
+                    <div class="movie">
+                        <div class="movie-poster skeleton"><img id="poster" class="poster" src="" /></div>
+                        <div class="description">
+                            <p id="title" class="bold skeleton skeleton-text">movie.title</p>
+                            <div class="movie-description">
+                                <p id="runtime" class="skeleton skeleton-text">105 min</p>
+                                <p id="genre" class="genre skeleton skeleton-text">Action</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </template>
         </div>
         <div class="filler center">
             <button class="more" onclick="addMovies()">
@@ -94,7 +129,7 @@
                     <li><a href="">Press Terms</a></li>
                     <li><a href="">Privacy Policy</a></li>
                 </ul>
-                
+
             </div>
             <p>&copy; 2024 Hemflix. All rights reserved.</p>
         </div>
@@ -103,6 +138,18 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
     <script src="script.js"></script>
     <script src="search-engine.js"></script>
+    <script>
+        window.onload = function () {
+            const container = document.querySelector("#movies");
+            const cardTemplate = document.getElementById("movie-temp");
+            console.log(cardTemplate);
+
+            for (let i = 0; i < 1; i++) {
+                container.append(cardTemplate.content.cloneNode(true));
+            }
+        }
+
+    </script>
 
 </body>
 
