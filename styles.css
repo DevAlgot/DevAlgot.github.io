@@ -593,6 +593,7 @@ footer ul{
 
 #login p, h2{
     margin: 0px;
+    margin-bottom: 4px;
 }
 
 #login input{
@@ -608,7 +609,8 @@ footer ul{
 
 
 p.error{
-    
+    color: red;
+    font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
