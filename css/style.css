@@ -1,0 +1,55 @@
+*{
+    box-sizing: border-box;
+}
+
+main{
+    margin: auto;
+    width: 50%;
+}
+
+#clear{
+    aspect-ratio: auto !important;
+}
+
+#lcd {
+    width: calc(100%);
+    padding: 0rem .5rem;
+    margin: 1rem 0;
+    border: 2px solid #00000029;
+    box-shadow: #00000021 0px 0px 20px 0px;
+    height: 3rem;
+    border-radius: 20px;
+    background: #fefefe;
+    font-size: 2rem;
+}
+
+#keyBoard{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: stretch;
+}
+
+#keyBoard button{
+    aspect-ratio: 1;
+    margin: 5px;
+    height: 50px;
+    border-radius: 20px;
+    border: 0;
+    font-size: 20px;
+    transition: background-color 0.2s ease;
+}
+
+#keyBoard button:hover{
+    background: #c9c9c9;
+}
+
+#keyBoard button:active{
+    border: 2px solid #00000029;
+}
+
+@media (max-width: 768px) {
+    main{
+        width: 75%;
+    }    
+}
