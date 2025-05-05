@@ -65,8 +65,8 @@ main{
 
 #keyBoard button.secret{
     background: #7d0ee800;
-    border: 2px solid blue;
-    box-shadow: blue 0px 0px 20px 0px;
+    border: 2px solid #4949ad;
+    box-shadow: #26269a 0px 0px 20px 0px;
     color: white;
 }
 
