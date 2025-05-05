@@ -52,6 +52,7 @@ main{
     border: 0;
     font-size: 20px;
     transition: background-color 0.2s ease;
+    color: black;
 }
 
 #keyBoard button:hover{
@@ -87,6 +88,9 @@ main{
 
 @media (max-width: 768px) {
     main{
-        width: 75%;
+        width: 95%;
     }    
+    #keyBoard button{
+        height: 65px;
+    }
 }
