@@ -2,6 +2,14 @@
     box-sizing: border-box;
 }
 
+body{
+    min-height: 100vh;
+}
+
+body.secret{
+    background: linear-gradient(180deg, rgb(55 50 73) 0%, rgb(27 27 27) 100%);
+}
+
 main{
     margin: auto;
     width: 50%;
@@ -21,6 +29,12 @@ main{
     border-radius: 20px;
     background: #fefefe;
     font-size: 2rem;
+}
+
+#lcd.secret{
+    background-color: #4a4e69;
+    color: white;
+    text-shadow: #a2a6b8 0px 0px 4px;
 }
 
 #keyBoard{
@@ -46,6 +60,29 @@ main{
 
 #keyBoard button:active{
     border: 2px solid #00000029;
+}
+
+#keyBoard button.secret{
+    background: #7d0ee800;
+    border: 2px solid blue;
+    box-shadow: blue 0px 0px 20px 0px;
+    color: white;
+}
+
+#keyBoard button.secret:hover{
+    background: #0e37c2;
+    box-shadow: none;
+}
+
+#keyBoard button.secret:active{
+    background-color: #163392;
+}
+
+#secretButton{
+    height: 50px;
+    width: 100%;
+    background: none;
+    border: none;
 }
 
 @media (max-width: 768px) {

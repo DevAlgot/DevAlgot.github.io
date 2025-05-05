@@ -11,10 +11,38 @@ let lcd = null; // displayen
 let memory = 0; // Lagrat/gamlat värdet från display
 let arithmetic = null; // Vilken beräkning som skall göras +,-, x eller /
 
+let main = null;
+let info_op = null;
+
 function init() {
     lcd = document.getElementById('lcd');
     let keyBoard = document.getElementById('keyBoard')
     keyBoard.onclick = buttonClick;
+
+    clearLCD();
+
+    main = document.body.children[0]; //tar "main"
+
+    var secretButton = document.createElement('button');
+    secretButton.id = "secretButton";
+    secretButton.innerHTML = "";
+    main.appendChild(secretButton);
+
+    secretButton.onclick = function(){
+        secret = !secret;
+
+        //for the keyboard buttons
+        for (let i = 0; i < keyBoard.children.length; i++) {
+            keyBoard.children[i].classList.toggle("secret");
+        }
+
+        //body
+        document.body.classList.toggle("secret");
+
+        //lcd
+        lcd.classList.toggle("secret");
+    };
+    
 }
 
 /**
@@ -32,25 +60,26 @@ function buttonClick(e) {
         addDigit(digit)
 
     } else { // Inte en siffertangent, övriga tangenter.
-        //går igenom vilken knapp som trycktes, och kollar vilket ID den har
+        //går igenom vilken knapp som trycktes, och kollar vilket ID den har  
+        
         switch (btn) {
             case 'add':
-                setOperator('+');
+                !secret ? setOperator('+') : addDigit("+");
                 break;
             case 'sub':
-                setOperator('-');
+                !secret ? setOperator('-') : addDigit("-");
                 break;
             case 'mul':
-                setOperator('*');
+                !secret ? setOperator('*') : addDigit("*");
                 break;
             case 'div':
-                setOperator('/');
+                !secret ? setOperator('/') : addDigit("/");
                 break;
             case 'clear':
                 memClear();
                 break;
             case 'enter':
-                if(arithmetic)
+                if(arithmetic || secret)
                     calculate();
                 break;
             case 'comma':
@@ -71,7 +100,7 @@ function addDigit(digit) {
  * Lägger till decimaltecken
  */
 function addComma() {
-    if (!lcd.value.includes('.')) { // kollar om decimaltecken redan finns
+    if (!lcd.value.includes('.') || secret) { // kollar om decimaltecken redan finns
         lcd.value += '.';
     }
 }
@@ -83,9 +112,6 @@ function addComma() {
 function setOperator(operator){
     arithmetic = operator;
     memory = parseFloat(lcd.value); // sparar värdet i minnet
-    console.log(arithmetic);
-    console.log(memory);
-    
     clearLCD();
 
 }
@@ -97,19 +123,25 @@ function calculate() {
     let result;
 
     //switchar operator och räknar ut vad det blir
-    switch (arithmetic) {
-        case '+':
-            result = memory + parseFloat(lcd.value);
-            break;
-        case '-':
-            result = memory - parseFloat(lcd.value);
-            break;
-        case '*':
-            result = memory * parseFloat(lcd.value);
-            break;
-        case '/':
-            result = memory / parseFloat(lcd.value);
-            break;
+    if(!secret){
+        switch (arithmetic) {
+            case '+':
+                result = memory + parseFloat(lcd.value);
+                break;
+            case '-':
+                result = memory - parseFloat(lcd.value);
+                break;
+            case '*':
+                result = memory * parseFloat(lcd.value);
+                break;
+            case '/':
+                result = memory / parseFloat(lcd.value);
+                break;
+        }
+    }
+    else {
+        //för lite mer avancerade uträkningar
+        result = eval(lcd.value)
     }
     console.log(result);
 
@@ -130,5 +162,6 @@ function memClear(){
     arithmetic = null;
     clearLCD();
 }
+
 
 window.onload = init;
