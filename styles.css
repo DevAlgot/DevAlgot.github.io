@@ -229,15 +229,15 @@ ul a:hover::after {
 }
 
 .skeleton {
-    animation: skeleton-loading 1s linear infinite alternate;
+    /*animation: skeleton-loading 1s linear infinite alternate;*/
 }
 
 .skeleton-poster {
-    background-color: #686868;
+    /*background-color: #686868; */
 }
 
 .skeleton-text {
-    background-color: #686868;
+    /*background-color: #686868;*/
 }
 
 @keyframes skeleton-loading {
@@ -676,5 +676,3 @@ footer ul {
         display: block;
     }
 }
-
-@media (max-width: 600px) {}

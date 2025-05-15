@@ -215,7 +215,8 @@ async function addMovies() {
     form.getElementById("title").innerHTML = movie.title;
     form.getElementById("genre").innerHTML = movie.genres[0]?.name;
     form.getElementById("runtime").innerHTML = movie.runtime + " min";
-    
+  
+    form.querySelector("a").style = "display: block"
 
     container.appendChild(form);
   }
