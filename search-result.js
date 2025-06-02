@@ -7,9 +7,13 @@ const options = {
 };
 
 
+let cardTemplate
+let endIndex = 10; // Number of movies to display initially
+let currentPage = 1; // Current page for pagination
 
 document.addEventListener('DOMContentLoaded', async function () {
-    
+    cardTemplate = document.getElementById("movie-temp");
+
     const movies = await getDataNewQuery(getQueryParam("query"));
     console.log(movies);
 
@@ -19,69 +23,63 @@ document.addEventListener('DOMContentLoaded', async function () {
 async function setUpMovies(movies) {
     const container = document.getElementById('movies');
 
-    movies.map(async movie => {
-        const form = document.createElement('form');
-
-        form.id = movie.imdb_id;
-
-        const button = document.createElement('button');
-        button.type = 'submit';
-        button.className = 'movie-button';
-
-        const movieDiv = document.createElement('div');
-        movieDiv.className = 'movie';
-
-        const posterDiv = document.createElement('img');
-        posterDiv.className = 'poster';
-        if (movie.poster_path == null) posterDiv.src = "../Images/image-not-found.png";
-        else posterDiv.src = "https://image.tmdb.org/t/p/original/"+movie.poster_path;
+    
+    console.log(movies);
 
 
-        const descriptionDiv = document.createElement('div');
-        descriptionDiv.className = 'description';
+    let forms = [];
 
-        const titleP = document.createElement('p');
-        titleP.className = 'bold';
-        titleP.textContent = movie.title || movie.name;
+    //ghost elements
+    for (let i = 0; i < movies.length; i++) {
+        container.appendChild(cardTemplate.content.cloneNode(true));
+        forms.push(container.lastElementChild);
+    }
 
-        const movieDescriptionDiv = document.createElement('div');
-        movieDescriptionDiv.className = 'movie-description';
-
-        const durationP = document.createElement('p');
-        durationP.textContent = (movie.runtime || movie.episode_run_time[0]) + " min";
-
-        const genreP = document.createElement('p');
-        genreP.className = 'genre';
-        genreP.textContent = movie.genres[0].name;
+    console.log(forms);
 
 
-        movieDescriptionDiv.appendChild(durationP);
-        movieDescriptionDiv.appendChild(genreP);
-        descriptionDiv.appendChild(titleP);
-        descriptionDiv.appendChild(movieDescriptionDiv);
-        movieDiv.appendChild(posterDiv);
-        movieDiv.appendChild(descriptionDiv);
-        button.appendChild(movieDiv);
-        form.appendChild(button);
-        container.appendChild(form);
+    //if there are not enough movies, get more
+    /*
+    if (movies.length < endIndex) {
+        currentPage++;
+        var t_movies = await getPopularMovies(currentPage);
+        //console.log(t_movies);
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            if(movie.external_ids == null){
-                const title = movie.imdb_id;
-                const url = `watch.html?title=${encodeURIComponent(title)}`;
-                window.location.href = url;
-            }
-            else{
-                const title = movie.external_ids.imdb_id;
-                const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=1&e=1`;
-                window.location.href = url;
-            }
-        });
+        for (let i = 0; i < t_movies.results.length; i++) {
+            movies.push(t_movies.results[i]);
+        }
+    }
+*/
 
-        return form;
-    });
+    for (let i = 0; i < forms.length; i++) {
+        if (!movies[i]) console.log("Couldn't find movie at index " + i);
+        let form = forms[i];
 
+        let isMovie = movies[i].number_of_seasons === undefined;        
+
+        let movie = movies[i];
+
+        let title = form.querySelector("#title");
+        let genre = form.querySelector("#genre");
+        let runtime = form.querySelector("#runtime");
+
+        //if(movie.imdb_id == null) return;
+
+        console.log(form);
+
+        form.href = `/watch${isMovie ? "" : "-serie"}.html?title=${isMovie ? movie.imdb_id : movie.external_ids.imdb_id + "&s=1&e=1"}`;
+
+        title.innerHTML = isMovie ? movie.title : movie.name;
+
+
+        form.querySelector("#poster").src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
+        form.querySelector(".movie-poster").classList.remove("skeleton");
+        form.querySelector(".description").classList.remove("skeleton");
+
+        genre.innerHTML = movie.genres[0]?.name;
+
+        runtime.innerHTML = isMovie ? movie.runtime : movie.episode_run_time[0] + " min";
+    }
 }
 
 
@@ -91,7 +89,7 @@ async function getDataNewQuery(movieName) {
     const response = await fetch(url, options)
         .then(response => response.json())
         .catch(err => console.error(err));
-    
+
     return response;
 }
 

@@ -27,19 +27,36 @@
                 <li><a href="">News</a></li>
             </ul>
             <div id="input">
-                <input type="text" id="search" placeholder="Search Movie" onkeyup="search()">
-                <button type="button" id="search-button"><a href="" style="font-size: .8rem;">Search</a></button>
-            </div>
+                    <input type="search" class="search" placeholder="Search Movie" onkeyup="search()">
+                    <button onclick="searchClick()" type="button" class="search-button">Search</button>
+                </div>
         </div>
     </header>
-    <main style="min-height: 100vh;background:rgb(10, 10, 10);">
+    <main style="min-height: 100vh;">
 
         <div id="movie-category" class="filler">
             <h2 style="color: white;">RESULTS</h2>
             <div class="seperator"></div>
         </div>
         <div id="movies">
-
+            <template id="movie-temp">
+                <a href="">
+                    <div class="movie">
+                        <div class="movie-poster skeleton">
+                            <div class="play-icon"></div>
+                            <img id="poster" class="poster" src="" />
+                        </div>
+                        
+                        <div class="description skeleton">
+                            <p id="title" class="bold"></p>
+                            <div class="movie-description">
+                                <p id="runtime" class=""></p>
+                                <p id="genre" class="genre"></p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </template>
         </div>
     </main>
 
