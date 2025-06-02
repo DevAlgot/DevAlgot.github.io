@@ -6,6 +6,9 @@ const options = {
   }
 };
 
+function alertP(message) {
+  alert(message);
+}
 
 document.addEventListener("DOMContentLoaded", async function () {
 
@@ -17,80 +20,78 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
   var background = document.getElementById("background");
-  var iframe = document.createElement("iframe");
+  var t_iframe = document.createElement("iframe");
   //iframe.src = "https://www.NontonGo.win/embed/movie/"+movie.imdb_id;
-  iframe.src = `https://multiembed.mov/?video_id=${movie.imdb_id}`; //directstream.php
+  t_iframe.src = `https://multiembed.mov/?video_id=${movie.imdb_id}`; //directstream.php
 
-  iframe.allowFullscreen = true;
-  background.appendChild(iframe);
+
+  t_iframe.allowFullscreen = true;
+  background.appendChild(t_iframe);
+
+  let iframe = background.querySelector("iframe"); 
+  background.innerHTML += `
+      <div id="" style=" margin-top: -13px; padding-top: 13px; border-radius: 0 0 15px 15px; background: beige; height: 60px; "> 
+        <div id="">Change Server
+          <button id="server1">VidFast</button>
+          <button id="server2">VidLink</button>
+          <button id="server3">VidEasy</button>
+          <button id="server4">MultiEmbed</button>
+        </div>
+      </div>
+
+  `;
+  background.querySelector("#server1").addEventListener("click", function () {  
+     background.querySelector("iframe").src = `https://vidfast.pro/movie/${movie.imdb_id}`;
+  });
+   background.querySelector("#server2").addEventListener("click", function () {  
+     background.querySelector("iframe").src = `https://vidlink.pro/movie/${movie.id}`;
+  });
+   background.querySelector("#server3").addEventListener("click", function () {  
+     background.querySelector("iframe").src = `https://player.videasy.net/movie/${movie.id}?color=8B5CF6`;
+  });
+   background.querySelector("#server4").addEventListener("click", function () {  
+     background.querySelector("iframe").src = `https://multiembed.mov/?video_id=${movie.imdb_id}`;
+  });
 
   var informationHolder = document.getElementById("information-holder");
-  var information = document.createElement("div");
-  information.id = "information";
 
-  var cover = document.createElement("div");
-  cover.id = "cover";
-  cover.style.backgroundImage = "url(https://image.tmdb.org/t/p/original/" + movie.poster_path + ")";
-  information.appendChild(cover);
 
-  var description = document.createElement("div");
-  description.id = "description";
-  var title = document.createElement("h2");
-  title.textContent = movie.title;
-  description.appendChild(title);
-
-  var categories = document.createElement("div");
-  categories.id = "Categories";
-
-  var genre = document.createElement("p");
-  genre.id = "Genre";
-
-  genre.textContent = "Genre: " + movie.genres[0].name;
-  categories.appendChild(genre);
-
-  var duration = document.createElement("p");
-  duration.id = "Duration";
-
-  duration.textContent = "Duration: " + movie.runtime + " minutes";
-  categories.appendChild(duration);
-
-  var country = document.createElement("p");
-  country.id = "Country";
-
-  country.textContent = "Country: " + movie.production_countries[0].name;
-  categories.appendChild(country);
-
-  var director = document.createElement("p");
-  director.id = "Director";
+  let director = "Director: Unknown";
 
   for (let i = 0; i < movie.credits.crew.length; i++) {
     if (movie.credits.crew[i].job.includes("Director"))
-      director.textContent = "Director: " + movie.credits.crew[i].name;
+      director = "Director: " + movie.credits.crew[i].name;
   }
-  //director.textContent = "Director: "+movie.credits.crew[1].name;
-  categories.appendChild(director);
-  description.appendChild(categories);
 
-  var rating = document.createElement("div");
-  rating.id = "rating";
-  var ratingText = document.createElement("p");
-  //ratingText.textContent = movie.Ratings[1];
-  rating.appendChild(ratingText);
-  description.appendChild(rating);
+  informationHolder.innerHTML += `
+  <div id="information">¨
+    <div id="cover" style="background-image: url(&quot;https://image.tmdb.org/t/p/original/${movie.poster_path};);"></div>
+      <div id="description">
+        <h2>${movie.title}</h2>
+      <div id="Categories">
+        <p id="Genre">Genre: ${movie.genres[0].name}</p>
+        <p id="Duration">Duration: ${movie.runtime} minutes</p>
+        <p id="Country">Country: ${movie.production_countries[0].name}</p>
+        <p id="Director">${director}</p>
+      </div>
+        <div id="rating"><p></p></div>
 
-  var paragraph = document.createElement("div");
-  var paragraphText = document.createTextNode(movie.overview);
-  paragraph.appendChild(paragraphText);
-  description.appendChild(paragraph);
-
-  information.appendChild(description);
-  informationHolder.appendChild(information);
+      <div>${movie.overview}</div>
+      </div>
+    </div>
+  `;
 
   setUpMovies(await getSimilarDataNew(movie.id));
   //setUpMovies(ar)
 
 
 });
+
+function change(url) {
+  console.log("Changing iframe source to: " + url);
+  
+  iframe.src = url;
+}
 
 async function getData(movieID) {
   const url = "https://www.omdbapi.com/?i=" + movieID + "&apikey=264ef6fe";
@@ -147,11 +148,11 @@ async function setUpMovies(movies) {
   const container = document.getElementById('movies');
 
   movies.results.length = 12;
-  
+
   movies.results.forEach(async p_movie => {
     const movie = await getDataNew(p_movie.id);
     console.log(movie);
-    
+
 
     const form = document.createElement('a');
 

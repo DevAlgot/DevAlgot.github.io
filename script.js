@@ -14,16 +14,18 @@ var addativeMovies = 12; // number of movies to add
 
 var isOpen;
 
-var startIndex = 0;
-var endIndex = movies;
+var startIndex = 12;
+var endIndex = movies + startIndex;
 
-const cardTemplate = document.getElementById("movie-temp");
+let cardTemplate;
 
 var currentPage = 1;
 
 document.addEventListener('DOMContentLoaded', async () => {
   isOpen = false;
-
+  
+  
+  
   var movieLinksPopular = [];
   var showLinksPopular = [];
 
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     }
     //dropdown DOM and style here
-
+    
   });
 
 
@@ -75,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   //setUpMovies(movieLinksPopular);
-
+  cardTemplate = document.getElementById("movie-temp");
   addMovies();
 
   var popularShows = await getPopularShows();
@@ -185,6 +187,19 @@ async function addMovies() {
   movies = movies.results;
   console.log(movies);
   
+
+  let forms = [];
+
+  //ghost elements
+  for (let i = 0; i < 12; i++) {   
+    container.appendChild(cardTemplate.content.cloneNode(true));
+    forms.push(container.lastElementChild);
+  }
+
+  console.log(forms);
+  
+
+  //if there are not enough movies, get more
   if(movies.length < endIndex)
   {
     currentPage++;
@@ -195,36 +210,39 @@ async function addMovies() {
       movies.push(t_movies.results[i]);       
     }
   }
-  console.log(endIndex);
-
   
 
-  for (let i = 0; i < 12; i++) {   
+  for (let i = 0; i < forms.length; i++) {   
     if(!movies[i]) console.log("Couldn't find movie at index " + i);
-    ;
+    let form = forms[i];
+
+    let title = form.querySelector("#title");
+    let genre = form.querySelector("#genre");
+    let runtime = form.querySelector("#runtime");
+
     //if(movie.imdb_id == null) return;
     var movie = await getDataNew(movies[i].id);
-    const form = cardTemplate.content.cloneNode(true);
-    
-    
-    //const form = document.createElement('a');'
-    
-    form.href = `/watch.html?title=${movie.imdb_id}`;
-    form.querySelector("a").href = `/watch.html?title=${movie.imdb_id}`;
-    form.getElementById("poster").src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
-    form.getElementById("title").innerHTML = movie.title;
-    form.getElementById("genre").innerHTML = movie.genres[0]?.name;
-    form.getElementById("runtime").innerHTML = movie.runtime + " min";
-  
-    form.querySelector("a").style = "display: block"
 
-    container.appendChild(form);
+    console.log(form);
+
+    form.href = `/watch.html?title=${movie.imdb_id}`;
+    
+    title.innerHTML = movie.title;
+
+    
+    form.querySelector("#poster").src = "https://image.tmdb.org/t/p/original/" + movie.poster_path;
+    form.querySelector(".movie-poster").classList.remove("skeleton");
+    form.querySelector(".description").classList.remove("skeleton");
+
+    genre.innerHTML = movie.genres[0]?.name;
+
+    runtime.innerHTML = movie.runtime + " min";
+
+
   }
 
   startIndex += 12;
   endIndex += 12;
-
-
 }
 
 

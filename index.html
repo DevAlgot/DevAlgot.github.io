@@ -89,41 +89,29 @@
         </div>
 
         <div class="grid" id="movies">
-            <!--
+            
             <template id="movie-temp">
                 <a href="">
                     <div class="movie">
                         <div class="movie-poster skeleton"><img id="poster" class="poster" src="" /></div>
-                        <div class="description">
-                            <p id="title" class="bold skeleton skeleton-text">movie.title</p>
+                        <div class="description skeleton">
+                            <p id="title" class="bold"></p>
                             <div class="movie-description">
-                                <p id="runtime" class="skeleton skeleton-text">105 min</p>
-                                <p id="genre" class="genre skeleton skeleton-text">Action</p>
+                                <p id="runtime" class=""></p>
+                                <p id="genre" class="genre"></p>
                             </div>
                         </div>
                     </div>
                 </a>
             </template>
-            -->
-            <template id="movie-temp">
-                <a href="" style="display: none;">
-                    <div class="movie">
-                        <div class="movie-poster skeleton"><img id="poster" class="poster" src="" /></div>
-                        <div class="description">
-                            <p id="title" class="bold skeleton skeleton-text">movie.title</p>
-                            <div class="movie-description">
-                                <p id="runtime" class="skeleton skeleton-text">105 min</p>
-                                <p id="genre" class="genre skeleton skeleton-text">Action</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </template>
+        
         </div>
         <div class="filler center">
             <button class="more" onclick="addMovies()">
                 See More
             </button>
+
+            
         </div>
         <div class="filler">
             <h2 style="color: white;">SERIES</h2>
@@ -153,18 +141,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
     <script src="script.js"></script>
     <script src="search-engine.js"></script>
-    <script>
-        window.onload = function () {
-            const container = document.querySelector("#movies");
-            const cardTemplate = document.getElementById("movie-temp");
-            console.log(cardTemplate);
 
-            for (let i = 0; i < 1; i++) {
-                container.append(cardTemplate.content.cloneNode(true));
-            }
-        }
-
-    </script>
 
 </body>
 
