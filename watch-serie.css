@@ -10,10 +10,10 @@
 
 
 #serie-action-holder{
-    display: flex;
     height: 70px;
-    justify-content: center;
-    margin-bottom: 50px;
+    width: calc(100% - var(--global-margin));
+    margin: auto;
+
     color: white;
 }
 #serie-action{
