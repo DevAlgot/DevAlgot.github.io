@@ -11,6 +11,8 @@ const options = {
 var showID = "";
 var show = "";
 
+var newSeason = 1;
+
 document.addEventListener("DOMContentLoaded", async function () {
 
   showID = (await getID(getQueryParam('title').split('/')[0]));
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   var seasonData = await getSeasonDataNew(showID, getQueryParam('s'));
 
-  console.log(seasonData);
+  console.log(show);
 
 
   document.title = "Watch " + show.name + " Online";
@@ -47,6 +49,35 @@ document.addEventListener("DOMContentLoaded", async function () {
   //Next/Previous button
 
 
+  var background = document.getElementById("background");
+  //iframe.src = "https://www.NontonGo.win/embed/movie/"+movie.imdb_id;
+
+
+
+  background.innerHTML += `
+      <div id="" style=" margin-top: -13px; padding-top: 9px; border-radius: 0 0 15px 15px; background: beige;"> 
+        <div id="changer-server">Change Server
+          <button class="server-button" id="server1">VidFast</button>
+          <button class="server-button" id="server2">VidLink</button>
+          <button class="server-button" id="server3">VidEasy</button>
+          <button class="server-button" id="server4">MultiEmbed</button>
+        </div>
+      </div>
+
+  `;
+  background.querySelector("#server1").addEventListener("click", function () {
+    background.querySelector("iframe").src = `https://vidfast.pro/tv/${show.external_ids.imdb_id}/${getQueryParam('s')}/${getQueryParam('e')}`;
+  });
+  background.querySelector("#server2").addEventListener("click", function () {
+    background.querySelector("iframe").src = `https://vidlink.pro/tv/${show.id}/${getQueryParam('s')}/${getQueryParam('e')}`;
+  });
+  background.querySelector("#server3").addEventListener("click", function () {
+    background.querySelector("iframe").src = `https://player.videasy.net/tv/${show.id}/${getQueryParam('s')}/${getQueryParam('e')}?color=8B5CF6`;
+  });
+  background.querySelector("#server4").addEventListener("click", function () {
+    background.querySelector("iframe").src = `https://multiembed.mov/?video_id=${show.external_ids.imdb_id}`;
+  });
+
   var information = document.getElementById("information");
 
 
@@ -59,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           <p id="Genre">Genre: Action</p>
           <p id="Duration">Duration: ${show.episode_run_time[0]} minutes</p>
           <p id="Country">Country: ${show.origin_country[0]}</p>
-          <p id="Director">Director: ${show.created_by[0].name}</p>
+          <p id="Director">Director: ${show.created_by[0]?.name}</p>
         </div>
         <div id="rating">
           <p></p>
@@ -80,7 +111,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   var ulElement = document.getElementById("seasons-list");
 
-
+  newSeason = parseInt(getQueryParam("s"));
+  console.log(newSeason);
+  
 
   //Next and previous button
   for (let j = 0; j < 3; j++) {
@@ -91,64 +124,67 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       if (j === 2) {
         var newEp = parseInt(getQueryParam("e")) + 1;
+        
         if (newEp >= seasonData.episodes.length + 1) {
-          btn.classList = "inactive";
+          btn.classList.add("inactive");
           return;
         }
 
-        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${getQueryParam('s')}&e=${newEp}`;
+        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${newSeason}&e=${newEp}`;
         window.location.href = url;
       }
       if (j === 0) {
         var newEp = parseInt(getQueryParam('e')) - 1;
+        console.log(newEp);
+        
         if (newEp < 1) {
-          btn.classList = "inactive";
+          btn.classList.add("inactive");
           return;
         }
 
-        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${getQueryParam('s')}&e=${(newEp)}`;
+        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${newSeason}&e=${(newEp)}`;
         window.location.href = url;
       }
     });
   }
 
-//Seasons
-for (let i = 0; i < show.seasons.length; i++) {
-  document.querySelector(".custom-options").innerHTML+=`
-  <span class="custom-option ${i==0 ? "selected" : ""}" data-value="${i+1}">Season ${i+1}</span>
+  //Seasons
+  for (let i = 0; i < show.seasons.length; i++) {
+    document.querySelector(".custom-options").innerHTML += `
+  <span class="custom-option ${i == 0 ? "selected" : ""}" data-value="${i + 1}">Season ${i + 1}</span>
   `;
-  
-}
-document.querySelector('.custom-select-trigger').addEventListener('click', function () {
-  document.querySelector('.custom-options').classList.toggle('show');
-  console.log("Clicked button");
-  
-});
 
-document.querySelectorAll('.custom-option').forEach(option => {
-  option.addEventListener('click', async function () {
-    // Remove the selected class from any previously selected option
-    document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
-
-    // Add the selected class to the clicked option
-    this.classList.add('selected');
-    updateEpisodes(await getSeasonDataNew(showID, this.dataset.value), show);
-    currentIndex = this.dataset.value;
-
-    // Update the select trigger text
-    document.querySelector('.custom-select-trigger').textContent = this.textContent;
-
-
-    // Hide the options
-    document.querySelector('.custom-options').classList.remove('show');
+  }
+  document.querySelector('.custom-select-trigger').addEventListener('click', function () {
+    document.querySelector('.custom-options').classList.toggle('show'); 
   });
-});
+
+  document.querySelectorAll('.custom-option').forEach(option => {
+    option.addEventListener('click', async function () {
+      // Remove the selected class from any previously selected option
+      document.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+
+      // Add the selected class to the clicked option
+      this.classList.add('selected');
+      let newSeasonData =await getSeasonDataNew(showID, this.dataset.value)
+      updateEpisodes(newSeasonData, show);
+      currentIndex = this.dataset.value;
+
+      // Update the select trigger text
+      document.querySelector('.custom-select-trigger').textContent = this.textContent;
+
+
+      // Hide the options
+      document.querySelector('.custom-options').classList.remove('show');
+      newSeason = newSeasonData.season_number;
+    });
+  });
 
   var episodesDiv = document.getElementById('episodes');
 
   updateEpisodes(seasonData, show)
 
-
+  document.querySelector('.custom-select-trigger').textContent = `Season ${newSeason}`;
   //TODO: Change the api to TMDb for more detailed data and similar movies
   console.log(show);
 
@@ -205,7 +241,7 @@ function updateEpisodes(seasonData, showData) {
   episodes_holder.childNodes.forEach(ep => {
     ep.addEventListener('click', function () {
       const title = showData.external_ids.imdb_id;
-      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${currentIndex}&e=${Array.from(episodes_holder.children).indexOf(ep) + 1}`;
+      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${newSeason}&e=${Array.from(episodes_holder.children).indexOf(ep) + 1}`;
       window.location.href = url;
     });
   })

@@ -11,19 +11,19 @@
 
 #serie-action-holder{
     height: 70px;
-    width: calc(100% - var(--global-margin));
+    width: calc(100% - var(--width));
     margin: auto;
-
-    color: white;
+    color: #000000;
+    margin-bottom: 1rem;
 }
 #serie-action{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
-    background-color: rgb(36, 36, 36);
+    /* background-color: rgb(36, 36, 36); */
     border-radius: 15px;
     font-size: larger;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 }
 
 svg{
@@ -40,17 +40,17 @@ svg{
     justify-content: center;
     gap: .5rem;
     width: 120px;
-    height: -webkit-fill-available;
+    height: 3rem;
     margin: 10px;
     border-radius: 10px;
-    background-color: rgb(85, 85, 85);
-    color: white;
+    background-color: rgb(221 211 211);
+    color: #353535;
     border: none;
     font-size: 1rem;
 }
 
 #serie-action button:hover{
-    background-color: rgb(65, 65, 65);
+    background-color: rgb(179 179 179);;
     cursor: pointer;
 }
 
@@ -156,9 +156,13 @@ svg{
 
 
 #episodes-class1 {
-    background-color: rgb(22, 22, 22);
+    /* background-color: rgb(117 117 117); */
     padding: 20px;
     border-radius: 15px;
+    width: calc(100% - var(--width));
+    margin: auto;
+    margin-bottom: calc(10vh - 70px);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 }
 
 .custom-select-trigger::after {
@@ -185,7 +189,7 @@ svg{
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    color: white;
+    color: #000000;
     border-radius: 4px;
     height: 40px;
 }
@@ -221,7 +225,7 @@ svg{
     overflow-x: scroll;
     display: flex;
     flex-wrap: nowrap;
-    background-color: rgb(10, 10, 10);
+    background-color: hsl(0deg 0% 94.64%);
     border-radius: 20px 20px 0 0;
     padding: 3px;
 }
@@ -244,12 +248,12 @@ svg{
 }
 
 .episode1-info {
-    background-color: rgb(30 22 22);
-    color: #ffffff;
+    background-color: rgb(227 227 227);
+    color: #0e0e0e;
     padding: .25rem;
     border-radius: 0 0 10px 10px;
     overflow: hidden;
-
+    box-shadow: 0px 0px 20px -2px rgba(0, 0, 0, 0.25);
 }
 
 .episode1-info h2 {

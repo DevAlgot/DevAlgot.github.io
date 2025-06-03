@@ -223,7 +223,6 @@ async function addMovies() {
     //if(movie.imdb_id == null) return;
     var movie = await getDataNew(movies[i].id);
 
-    console.log(form);
 
     form.href = `/watch.html?title=${movie.imdb_id}`;
     

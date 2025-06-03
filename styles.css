@@ -6,7 +6,6 @@
     scroll-behavior: smooth;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
-    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .2s;
 }
 
 :root {
