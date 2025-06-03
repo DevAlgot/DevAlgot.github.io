@@ -8,41 +8,7 @@ const api_options = {
 
 
 
-async function getDataNewQuery(movieName) {
-  var url = "https://api.themoviedb.org/3/search/multi?query=" + movieName + "&include_adult=false&language=en-US&page=1";
 
-  const response = await fetch(url, options)
-    .then(response => response.json())
-    .catch(err => console.error(err));
-
-  var results = [];
-
-  for (let i = 0; i < Math.min(response.results.length, 10); i++) {
-    results.push(await getDataFromID(response.results[i].id, response.results[i].media_type));
-    //console.log(response.results[i]);
-
-  }
-  //sconsole.log(results);
-
-  return results;
-}
-
-async function getDataFromID(id, movie) {
-  var url
-  if (movie === 'movie') {
-    url = "https://api.themoviedb.org/3/movie/" + id + "&include_adult=false&language=en-US&append_to_response=external_ids";
-  }
-  else {
-    url = "https://api.themoviedb.org/3/tv/" + id + "?append_to_response=external_ids";
-  }
-
-  const response = await fetch(url, options)
-    .then(response => response.json())
-    //.then(response => console.log(response))
-    .catch(err => console.error(err));
-
-  return response;
-}
 
 
 function createSearchResult(data, index) {

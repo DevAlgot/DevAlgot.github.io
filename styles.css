@@ -13,6 +13,7 @@
     --main-color: #5f0985;
     --global-margin: 200px;
     --global-radius: 15px;
+    --movie-amount: calc(100% / 270px);
 }
 
 main {
@@ -281,6 +282,9 @@ ul a:hover::after {
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+.movie .no-poster{
+    width: 100%;
+}
 
 .movie .play-icon {
     content: '';

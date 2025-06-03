@@ -99,7 +99,6 @@ iframe{
 
 .header, header a{
     background: rgb(255, 255, 255);
-    box-shadow: 0 0 4px rgba(14, 55, 55, 15%);
     color: black;
 }
 
