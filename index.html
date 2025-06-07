@@ -40,16 +40,14 @@
                     <p class="name">Hem</p>flix
                 </a></h1>
             <div id="input">
-                    <input type="search" class="search" placeholder="Search Movie" onkeyup="search()">
-                    <button onclick="searchClick()" type="button" class="search-button">Search</button>
-                </div>
+                <input type="search" class="search" placeholder="Search Movie" onkeyup="search()">
+                <button onclick="searchClick()" type="button" class="search-button">Search</button>
+            </div>
             <div id="header-button">
-                <button class="search-button">
-                    Log In
-                </button>
-                <button class="search-button secondary">
-                    Sign Up
-                </button>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
             </div>
         </div>
     </header>
@@ -74,7 +72,7 @@
                     <a href="">Comedy</a>
                     <a href="">Comedy</a>
                 </div>
-                
+
             </div>
         </div>
 
@@ -84,7 +82,7 @@
         </div>
 
         <div class="grid" id="movies">
-            
+
             <template id="movie-temp">
                 <a href="">
                     <div class="movie">
@@ -92,7 +90,7 @@
                             <div class="play-icon"></div>
                             <img id="poster" class="poster" src="" />
                         </div>
-                        
+
                         <div class="description skeleton">
                             <p id="title" class="bold"></p>
                             <div class="movie-description">
@@ -103,14 +101,14 @@
                     </div>
                 </a>
             </template>
-        
+
         </div>
         <div class="filler center">
             <button class="more" onclick="addMovies()">
                 See More
             </button>
 
-            
+
         </div>
         <div class="filler">
             <h2 style="color: white;">SERIES</h2>

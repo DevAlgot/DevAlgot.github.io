@@ -9,14 +9,37 @@
 }
 
 :root {
-    --main-color: #5f0985;
     --global-margin: 200px;
     --global-radius: 15px;
     --movie-amount: calc(100% / 270px);
+    
+    --theme-color: #5f0985;
+    --main-color: #e3e3e3;
+
+    --text-color-light-sharp: white;
+    --text-color-dark-sharp: black;
+    --text-color-theme: #241c33;
+
+    --skeleton-color: #a5a5a5;
+    --skeleton-color-light: #cecece;
+
+    --categories-background: #ebebeb;
+    --header-background: rgb(255, 255, 255);
 }
 
+:root.dark{
+    --main-color: #141414;
+
+    --text-color-light-sharp: black;
+    --text-color-dark-sharp: white;
+    --text-color-theme: #d4d7dd;
+
+    --categories-background: #1e1e1e;
+    --header-background: rgb(25 25 25);;
+} 
+
 main {
-    background-color: #e3e3e3;
+    background-color: var(--main-color);
 }
 
 body {
@@ -58,13 +81,13 @@ header {
 }
 
 .active-header {
-    background: rgb(255, 255, 255);
+    background: var(--header-background);
     box-shadow: 0 0 4px rgba(14, 55, 55, 15%);
 }
 
 a {
     font-size: 2.5rem;
-    color: white;
+    color: var(--text-color-light-sharp);
 }
 
 ul {
@@ -81,7 +104,7 @@ ul li {
 ul a {
     font-size: 1.5rem;
     font-weight: 500;
-    color: white;
+    color: var(--text-color-light-sharp);
 
 }
 
@@ -107,19 +130,19 @@ ul a:hover::after {
 }
 
 .header.active-header ul a {
-    color: #020307;
+    color: var(--text-color-dark-sharp);
 }
 
 .header.active-header #name {
-    color: #020307;
+    color: var(--text-color-dark-sharp);
 }
 
 .header.active-header ul a:hover::after {
-    background: black;
+    background: var(--text-color-dark-sharp);
 }
 
 .header.active-header .search {
-    background-color: #e3e3e3;
+    background-color: var(--main-color);
     color: rgb(67, 67, 67);
 }
 
@@ -136,59 +159,75 @@ ul a:hover::after {
     fill: rgb(255, 255, 255);
 }
 
-
-
-.result {
-    display: flex;
-    background-color: #141414;
-    border-radius: 9px;
-    transition: all ease .2s;
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
 }
 
-.result:hover {
-    background-color: #2b2a2a;
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
     cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
-.searchResult-header {
-    font-weight: 600;
-    overflow-x: hidden;
-    text-wrap: nowrap;
-    text-overflow: ellipsis;
-}
-
-.search-text {
-    width: 183px;
-    /* padding-right: 10px; */
-    text-overflow: ellipsis;
-    color: whitesmoke;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-.result p {
-    margin: 0;
-}
-
-.result-type {
-    transition: all;
-    text-transform: capitalize;
-}
-
-.result-type::after {
+.slider:before {
+    position: absolute;
     content: "";
-    margin: .4rem;
-
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
 
 ::placeholder {
     color: rgb(73, 92, 111);
 }
 
 .header.active-header #input {
-    background-color: #e3e3e3;
+    background-color: var(--main-color);
     color: rgb(67, 67, 67);
 }
 
@@ -207,7 +246,7 @@ ul a:hover::after {
 
     flex-direction: row;
     flex-wrap: wrap;
-    color: black;
+    color: var(--text-color-dark-sharp);
 }
 
 .seperator {
@@ -229,25 +268,25 @@ ul a:hover::after {
 }
 
 .skeleton {
-   animation: skeleton-loading 1s linear infinite alternate;
-   border-radius: 10px;
-   padding: 2px 5px !important;
-   height: 51px;
+    animation: skeleton-loading 1s linear infinite alternate;
+    border-radius: 10px;
+    padding: 2px 5px !important;
+    height: 51px;
 }
 
 .skeleton-poster {
-    background-color: #a5a5a5; 
+    background-color: var(--skeleton-color);
 }
 
 
 
 @keyframes skeleton-loading {
     0% {
-        background-color: #a5a5a5;
+        background-color:var(--skeleton-color);
     }
 
     100% {
-        background-color: #cecece;
+        background-color: var(--skeleton-color-light);
     }
 }
 
@@ -281,7 +320,7 @@ ul a:hover::after {
     transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.movie .no-poster{
+.movie .no-poster {
     width: 100%;
 }
 
@@ -292,19 +331,23 @@ ul a:hover::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: transparent; /* Remove overlay */
+    background-color: transparent;
+    /* Remove overlay */
     background-image: url(Images/play.png);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 50px; /* Adjust as needed */
+    background-size: 50px;
+    /* Adjust as needed */
     opacity: 0;
-    z-index: 1; /* No need for extremely high z-index */
+    z-index: 1;
+    /* No need for extremely high z-index */
     transition: opacity .2s ease-in-out;
 }
 
 .movie:hover .play-icon {
     opacity: 1;
-    filter: hue-rotate(180deg); /* Optional: Add a hue rotation effect */
+    filter: hue-rotate(180deg);
+    /* Optional: Add a hue rotation effect */
     /* Remove transform unless needed */
 }
 
@@ -319,18 +362,18 @@ ul a:hover::after {
 
 .movie:hover .poster {
     transform: scale(1.05);
-    filter:brightness(0.6)
+    filter: brightness(0.6)
 }
 
 .movie .description {
-    color: white;
+    color: var(--text-color-light-sharp);
     z-index: 10;
     padding: .2rem 0.2rem;
     margin-top: .2rem;
 }
 
 .movie .description p {
-    color: #241c33;;
+    color: var(--text-color-theme);
 }
 
 .movie .description .movie-description {
@@ -380,7 +423,7 @@ ul a:hover::after {
 
 .swiper-info {
     position: absolute;
-    color: white;
+    color: var(--text-color-light-sharp);
     padding: 10px;
     box-sizing: border-box;
     inset: 0;
@@ -391,20 +434,14 @@ ul a:hover::after {
     max-width: 40rem;
 }
 
-.swiper-info button {
-    background-color: red;
-    border: 0;
-    border-radius: 20px;
-}
-
 .swiper-info a {
     font-size: x-large;
-    color: white;
+    color: var(--text-color-light-sharp);
     margin: 0px;
     padding: 15px 15px;
     border: 0;
     border-radius: 15px;
-    background-color: var(--main-color);
+    background-color: var(--theme-color);
     text-decoration: none;
     transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
     width: fit-content;
@@ -467,9 +504,9 @@ ul a:hover::after {
 .search-button {
     margin-left: 17px;
     border: none;
-    background: var(--main-color);
+    background: var(--theme-color);
     width: 5rem;
-    color: white;
+    color: var(--text-color-light-sharp);
     height: 100%;
     border-radius: 4em;
     transition: all .2s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -478,14 +515,14 @@ ul a:hover::after {
 }
 
 .secondary {
-    border: solid var(--main-color) 2px;
+    border: solid var(--theme-color) 2px;
     background: none;
-    color: black;
+    color: var(--text-color-dark-sharp);
 }
 
 .search-button:hover {
     background-color: rgb(11, 18, 83);
-    color: white;
+    color: var(--text-color-light-sharp);
 }
 
 
@@ -523,7 +560,7 @@ swiper-slide {
 }
 
 .name {
-    color: var(--main-color);
+    color: var(--theme-color);
 }
 
 #helper {
@@ -554,7 +591,7 @@ swiper-slide {
 }
 
 #search-categories {
-    background-color: #ebebeb;
+    background-color: var(--categories-background);
     border-radius: 15px;
     height: 100%;
     overflow: hidden;
@@ -577,9 +614,9 @@ swiper-slide {
 
 #categories a {
     position: relative;
-    color: black;
+    color: var(--text-color-dark-sharp);
     text-decoration: none;
-    padding: 0 10px ;
+    padding: 0 10px;
     font-size: 1.5rem;
     transition: all 0.15s ease-in-out;
     border-radius: var(--global-radius);
@@ -592,7 +629,7 @@ swiper-slide {
 
 footer {
     background-color: black;
-    color: white;
+    color: var(--text-color-light-sharp);
     border-top: 1px solid rgb(50, 50, 50);
 }
 
@@ -606,7 +643,7 @@ footer ul {
 
 .more {
     background: none;
-    color: white;
+    color: var(--text-color-light-sharp);
     border: none;
     font-size: 2.5rem;
     padding: 5px 10px

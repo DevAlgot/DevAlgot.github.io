@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
   background.innerHTML += `
-      <div id="" style=" margin-top: -13px; padding-top: 9px; border-radius: 0 0 15px 15px; background: beige;"> 
+      <div id="change-server-body"> 
         <div id="changer-server">Change Server
           <button class="server-button" id="server1">VidFast</button>
           <button class="server-button" id="server2">VidLink</button>
@@ -231,7 +231,7 @@ function updateEpisodes(seasonData, showData) {
             <h2>${seasonData.episodes[i].name}</h2>
             <div>
                 <p>${seasonData.episodes[i].runtime} min</p>
-                <p>${seasonData.episodes[i].air_date.split("-")[0]}</p>
+                <p>${seasonData.episodes[i].air_date?.split("-")[0]}</p>
             </div>
         </div>
     </div>

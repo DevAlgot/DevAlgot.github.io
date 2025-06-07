@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   let iframe = background.querySelector("iframe"); 
   background.innerHTML += `
-      <div id="" style=" margin-top: -13px; padding-top: 9px; border-radius: 0 0 15px 15px; background: beige;"> 
+      <div id="change-server-body"> 
         <div id="changer-server">Change Server
           <button class="server-button" id="server1">VidFast</button>
           <button class="server-button" id="server2">VidLink</button>
