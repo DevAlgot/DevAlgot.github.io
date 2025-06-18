@@ -54,6 +54,11 @@ iframe{
     border-radius: 5px;
 }
 
+.server-button:hover {
+    background: #8ab4e9;
+    cursor: pointer;
+}
+
 #information-holder{
     display: flex;
     justify-content: center;

@@ -13,6 +13,10 @@ var show = "";
 
 var newSeason = 1;
 
+var currentSeason = 1;
+var currentEpisode = 1;
+var currentService = "videasy"; // Default service
+
 document.addEventListener("DOMContentLoaded", async function () {
 
   showID = (await getID(getQueryParam('title').split('/')[0]));
@@ -27,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   var background = document.getElementById("background");
   var iframe = document.createElement("iframe");
-  iframe.src = `https://multiembed.mov/?video_id=${getQueryParam('title')}&e=${getQueryParam('e')}&s=${getQueryParam('s')}`;
+    iframe.src = `https://player.videasy.net/tv/${show.id}/${currentSeason}/${currentEpisode}?color=8B5CF6`;
   iframe.allowFullscreen = true;
   background.appendChild(iframe);
 
@@ -38,7 +42,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   pElement.appendChild(textNode);
 
   var spanElement = document.createElement("span");
-  var spanTextNode = document.createTextNode("Season " + getQueryParam('s') + " Episode " + getQueryParam("e"));
+  var spanTextNode = document.createTextNode("Season " + currentSeason + " Episode " + currentEpisode);
+  spanElement.id = "current-watch";
   spanElement.appendChild(spanTextNode);
 
   pElement.appendChild(spanElement);
@@ -66,15 +71,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   `;
   background.querySelector("#server1").addEventListener("click", function () {
-    background.querySelector("iframe").src = `https://vidfast.pro/tv/${show.external_ids.imdb_id}/${getQueryParam('s')}/${getQueryParam('e')}`;
+    currentService = "vidfast";
+    background.querySelector("iframe").src = `https://vidfast.pro/tv/${show.external_ids.imdb_id}/${currentSeason}/${currentEpisode}`;
   });
   background.querySelector("#server2").addEventListener("click", function () {
-    background.querySelector("iframe").src = `https://vidlink.pro/tv/${show.id}/${getQueryParam('s')}/${getQueryParam('e')}`;
+    currentService = "vidlink";
+    background.querySelector("iframe").src = `https://vidlink.pro/tv/${show.id}/${currentSeason}/${currentEpisode}}`;
   });
   background.querySelector("#server3").addEventListener("click", function () {
-    background.querySelector("iframe").src = `https://player.videasy.net/tv/${show.id}/${getQueryParam('s')}/${getQueryParam('e')}?color=8B5CF6`;
+    currentService = "videasy";
+    background.querySelector("iframe").src = `https://player.videasy.net/tv/${show.id}/${currentSeason}/${currentEpisode}?color=8B5CF6`;
   });
   background.querySelector("#server4").addEventListener("click", function () {
+    currentService = "multiembed";
     background.querySelector("iframe").src = `https://multiembed.mov/?video_id=${show.external_ids.imdb_id}`;
   });
 
@@ -113,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   newSeason = parseInt(getQueryParam("s"));
   console.log(newSeason);
-  
+
 
   //Next and previous button
   for (let j = 0; j < 3; j++) {
@@ -123,40 +132,27 @@ document.addEventListener("DOMContentLoaded", async function () {
       const title = show.external_ids.imdb_id;
 
       if (j === 2) {
-        var newEp = parseInt(getQueryParam("e")) + 1;
-        
-        if (newEp >= seasonData.episodes.length + 1) {
-          btn.classList.add("inactive");
-          return;
-        }
-
-        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${newSeason}&e=${newEp}`;
-        window.location.href = url;
+        currentEpisode++;
+        document.getElementById("current-watch").textContent = `Season ${currentSeason} Episode ${currentEpisode}`;
+        changeServer(title);
       }
       if (j === 0) {
-        var newEp = parseInt(getQueryParam('e')) - 1;
-        console.log(newEp);
-        
-        if (newEp < 1) {
-          btn.classList.add("inactive");
-          return;
-        }
+        currentEpisode--;
+        document.getElementById("current-watch").textContent = `Season ${currentSeason} Episode ${currentEpisode}`;
 
-        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${newSeason}&e=${(newEp)}`;
-        window.location.href = url;
+        changeServer(title);
       }
     });
   }
 
   //Seasons
   for (let i = 0; i < show.seasons.length; i++) {
-    document.querySelector(".custom-options").innerHTML += `
-  <span class="custom-option ${i == 0 ? "selected" : ""}" data-value="${i + 1}">Season ${i + 1}</span>
-  `;
+    document.querySelector(".custom-options").innerHTML += 
+    `<span class="custom-option ${i == 0 ? "selected" : ""}" data-value="${i + 1}">Season ${i + 1}</span>`;
 
   }
   document.querySelector('.custom-select-trigger').addEventListener('click', function () {
-    document.querySelector('.custom-options').classList.toggle('show'); 
+    document.querySelector('.custom-options').classList.toggle('show');
   });
 
   document.querySelectorAll('.custom-option').forEach(option => {
@@ -166,7 +162,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       // Add the selected class to the clicked option
       this.classList.add('selected');
-      let newSeasonData =await getSeasonDataNew(showID, this.dataset.value)
+      let newSeasonData = await getSeasonDataNew(showID, this.dataset.value)
       updateEpisodes(newSeasonData, show);
       currentIndex = this.dataset.value;
 
@@ -190,41 +186,60 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 });
 
-
-async function getID(imdb_id) {
-  const response = await fetch(`https://api.themoviedb.org/3/find/${imdb_id}?external_source=imdb_id`, options)
-    .then(res => res.json())
-    .catch(err => console.error(err));
-
-  return response.tv_results[0].id;
+function changeServer(title) {
+  switch (currentService) {
+    case "vidfast":
+      background.querySelector("iframe").src = `https://vidfast.pro/tv/${show.external_ids.imdb_id}/${currentSeason}/${currentEpisode}`;
+      break;
+    case "vidlink":
+      background.querySelector("iframe").src = `https://vidlink.pro/tv/${show.id}/${currentSeason}/${currentEpisode}`;
+      break;
+    case "videasy":
+      background.querySelector("iframe").src = `https://player.videasy.net/tv/${show.id}/${currentSeason}/${currentEpisode}?color=8B5CF6`;
+      break;
+    case "multiembed":
+      background.querySelector("iframe").src = `https://multiembed.mov/?video_id=${title}&s=${currentSeason}&e=${currentEpisode}`;
+      break;
+    default:
+      background.querySelector("iframe").src = `https://multiembed.mov/?video_id=${title}&s=${currentSeason}&e=${currentEpisode}`;
+      break;
+  }
 }
 
-async function getSimilarDataNew(movieID) {
-  var url = "https://api.themoviedb.org/3/tv/" + movieID + "/similar?language=en-US&page=1";
+  async function getID(imdb_id) {
+    const response = await fetch(`https://api.themoviedb.org/3/find/${imdb_id}?external_source=imdb_id`, options)
+      .then(res => res.json())
+      .catch(err => console.error(err));
+
+    return response.tv_results[0].id;
+  }
+
+  async function getSimilarDataNew(movieID) {
+    var url = "https://api.themoviedb.org/3/tv/" + movieID + "/similar?language=en-US&page=1";
 
 
-  const response = await fetch(url, options)
-    .then(response => response.json())
-    .catch(err => console.error(err));
+    const response = await fetch(url, options)
+      .then(response => response.json())
+      .catch(err => console.error(err));
 
-  return response;
+    return response;
 
-}
+  }
 
-function updateEpisodes(seasonData, showData) {
-  document.getElementById("episodes")?.remove();
+  function updateEpisodes(seasonData, showData) {
+    document.getElementById("episodes")?.remove();
 
-  var episodesDiv = document.createElement("div");
-  episodesDiv.id = "episodes";
+    var episodesDiv = document.createElement("div");
+    episodesDiv.id = "episodes";
 
-  document.getElementById("episodes1")?.remove();
-  var episodes_holder = document.createElement("div");
-  episodes_holder.id = "episodes1";
+    document.getElementById("episodes1")?.remove();
+    var episodes_holder = document.createElement("div");
+    episodes_holder.id = "episodes1";
 
-  for (let i = 0; i < seasonData.episodes.length; i++) {
-    // New episodes
+    for (let i = 0; i < seasonData.episodes.length; i++) {
+      // New episodes
 
-    episodes_holder.innerHTML += `
+      episodes_holder.innerHTML += `
     <div class="episode1">
         <img src="https://image.tmdb.org/t/p/original/${seasonData.episodes[i].still_path}" alt="">
         <div class="episode1-info">
@@ -236,118 +251,121 @@ function updateEpisodes(seasonData, showData) {
         </div>
     </div>
     `;
+    }
+
+    episodes_holder.childNodes.forEach(ep => {
+      ep.addEventListener('click', function () {
+        const title = showData.external_ids.imdb_id;
+        currentSeason = newSeason;
+        currentEpisode = Array.from(episodes_holder.children).indexOf(ep) + 1;
+        changeServer();
+        document.getElementById("current-watch").textContent = `Season ${currentSeason} Episode ${currentEpisode}`;
+        
+      });
+    })
+
+    document.getElementById("episodes-class1").appendChild(episodes_holder);
   }
 
-  episodes_holder.childNodes.forEach(ep => {
-    ep.addEventListener('click', function () {
-      const title = showData.external_ids.imdb_id;
-      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=${newSeason}&e=${Array.from(episodes_holder.children).indexOf(ep) + 1}`;
-      window.location.href = url;
-    });
-  })
-
-  document.getElementById("episodes-class1").appendChild(episodes_holder);
-}
 
 
 
+  async function getDataNew(showID) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${showID}?append_to_response=external_ids&language=en-US`, options)
+      .then(res => res.json())
+      .catch(err => console.error(err));
 
-async function getDataNew(showID) {
-  const response = await fetch(`https://api.themoviedb.org/3/tv/${showID}?append_to_response=external_ids&language=en-US`, options)
-    .then(res => res.json())
-    .catch(err => console.error(err));
+    return response;
+  }
 
-  return response;
-}
+  async function getSeasonDataNew(showID = "124364", season) {
+    fetch(`https://api.themoviedb.org/3/tv/124364/${showID}/${season}?append_to_response=external_ids?language=en-US`, options)
+      .then(res => res.json())
+      .catch(err => console.error(err));
+  }
 
-async function getSeasonDataNew(showID = "124364", season) {
-  fetch(`https://api.themoviedb.org/3/tv/124364/${showID}/${season}?append_to_response=external_ids?language=en-US`, options)
-    .then(res => res.json())
-    .catch(err => console.error(err));
-}
+  async function getSeasonDataNew(showID, seasonIndex) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${showID}/season/${seasonIndex}?language=en-US`, options)
+      .then(res => res.json())
+      .catch(err => console.error(err));
 
-async function getSeasonDataNew(showID, seasonIndex) {
-  const response = await fetch(`https://api.themoviedb.org/3/tv/${showID}/season/${seasonIndex}?language=en-US`, options)
-    .then(res => res.json())
-    .catch(err => console.error(err));
-
-  return response;
-}
-
-
-async function setUpShows(shows) {
-  const container = document.getElementById('similar');
+    return response;
+  }
 
 
-  shows.map(async movie => {
-    if (movie.external_ids.imdb_id == null) return;
-    if (container.childElementCount >= 12) return;
-    //var movie = await getDataFromID(movie.external_ids.imdb_id);
-    const form = document.createElement('form');
+  async function setUpShows(shows) {
+    const container = document.getElementById('similar');
 
-    form.id = movie.imdbID;
 
-    const button = document.createElement('button');
-    button.type = 'submit';
-    button.className = 'movie-button';
+    shows.map(async movie => {
+      if (movie.external_ids.imdb_id == null) return;
+      if (container.childElementCount >= 12) return;
+      //var movie = await getDataFromID(movie.external_ids.imdb_id);
+      const form = document.createElement('form');
 
-    const movieDiv = document.createElement('div');
-    movieDiv.className = 'movie';
+      form.id = movie.imdbID;
 
-    const posterDiv = document.createElement('img');
-    posterDiv.className = 'poster';
-    posterDiv.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+      const button = document.createElement('button');
+      button.type = 'submit';
+      button.className = 'movie-button';
 
-    const descriptionDiv = document.createElement('div');
-    descriptionDiv.className = 'description';
+      const movieDiv = document.createElement('div');
+      movieDiv.className = 'movie';
 
-    const titleP = document.createElement('p');
-    titleP.className = 'bold';
-    titleP.textContent = movie.name;
+      const posterDiv = document.createElement('img');
+      posterDiv.className = 'poster';
+      posterDiv.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
 
-    const movieDescriptionDiv = document.createElement('div');
-    movieDescriptionDiv.className = 'movie-description';
+      const descriptionDiv = document.createElement('div');
+      descriptionDiv.className = 'description';
 
-    const durationP = document.createElement('p');
-    durationP.textContent = (movie.episode_run_time[0] || "0") + " min";
+      const titleP = document.createElement('p');
+      titleP.className = 'bold';
+      titleP.textContent = movie.name;
 
-    const genreP = document.createElement('p');
-    genreP.className = 'genre';
-    genreP.textContent = movie.genres[0]?.name;
+      const movieDescriptionDiv = document.createElement('div');
+      movieDescriptionDiv.className = 'movie-description';
 
-    movieDescriptionDiv.appendChild(durationP);
-    movieDescriptionDiv.appendChild(genreP);
-    descriptionDiv.appendChild(titleP);
-    descriptionDiv.appendChild(movieDescriptionDiv);
-    movieDiv.appendChild(posterDiv);
-    movieDiv.appendChild(descriptionDiv);
-    button.appendChild(movieDiv);
-    form.appendChild(button);
-    container.appendChild(form);
+      const durationP = document.createElement('p');
+      durationP.textContent = (movie.episode_run_time[0] || "0") + " min";
 
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const title = movie.external_ids.imdb_id;
-      const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=1&e=1`;
-      window.location.href = url;
+      const genreP = document.createElement('p');
+      genreP.className = 'genre';
+      genreP.textContent = movie.genres[0]?.name;
+
+      movieDescriptionDiv.appendChild(durationP);
+      movieDescriptionDiv.appendChild(genreP);
+      descriptionDiv.appendChild(titleP);
+      descriptionDiv.appendChild(movieDescriptionDiv);
+      movieDiv.appendChild(posterDiv);
+      movieDiv.appendChild(descriptionDiv);
+      button.appendChild(movieDiv);
+      form.appendChild(button);
+      container.appendChild(form);
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const title = movie.external_ids.imdb_id;
+        const url = `watch-serie.html?title=${encodeURIComponent(title)}&s=1&e=1`;
+        window.location.href = url;
+      });
+
+      return form;
     });
 
-    return form;
-  });
-
-  //forms.forEach(form => container.appendChild(form));
-}
+    //forms.forEach(form => container.appendChild(form));
+  }
 
 
 
-function getQueryParam(param) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(param);
-}
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
 
 
 
-`
+  `
 <div id="episodes-class">
   <div id="seasons">
     <ul>

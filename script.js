@@ -21,10 +21,17 @@ let cardTemplate;
 
 var currentPage = 1;
 
+var darkMode = false; // Dark mode is not implemented yet, but this variable is here for future use.
+
 document.addEventListener('DOMContentLoaded', async () => {
   isOpen = false;
   
-  
+  document.getElementById("dark-mode").addEventListener('click', function () {
+    darkMode = !darkMode;
+    document.getRootNode().querySelector("html").classList.toggle("dark", darkMode);
+    console.log("Dark mode is " + (darkMode ? "on" : "off"));
+    
+  });
   
   var movieLinksPopular = [];
   var showLinksPopular = [];

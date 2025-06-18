@@ -12,7 +12,7 @@
     --global-margin: 200px;
     --global-radius: 15px;
     --movie-amount: calc(100% / 270px);
-    
+
     --theme-color: #5f0985;
     --main-color: #e3e3e3;
 
@@ -27,16 +27,19 @@
     --header-background: rgb(255, 255, 255);
 }
 
-:root.dark{
+:root.dark {
     --main-color: #141414;
 
-    --text-color-light-sharp: black;
+    --text-color-light-sharp: rgb(254, 254, 254);
     --text-color-dark-sharp: white;
     --text-color-theme: #d4d7dd;
 
     --categories-background: #1e1e1e;
-    --header-background: rgb(25 25 25);;
-} 
+    --header-background: rgb(25 25 25);
+
+    --skeleton-color: #4b4a4a;
+    --skeleton-color-light: #272727;
+}
 
 main {
     background-color: var(--main-color);
@@ -282,7 +285,7 @@ input:checked+.slider:before {
 
 @keyframes skeleton-loading {
     0% {
-        background-color:var(--skeleton-color);
+        background-color: var(--skeleton-color);
     }
 
     100% {
